@@ -1,0 +1,3139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=yes">
+  <meta name="theme-color" content="#070b09">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="ASCENSION">
+  <meta name="description" content="Project Ascension v1.0: Permanent Personal Development RPG. Combining MI6 Intelligence, Batcave Combat, Solo Leveling RPG Progression, and The Inner Sanctum.">
+  <title>PROJECT ASCENSION v1.0 // OPERATIVE COMMAND SYSTEM</title>
+  
+  <!-- Embedded PWA Web App Manifest -->
+  <link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22PROJECT%20ASCENSION%20v1.0%22%2C%22short_name%22%3A%22ASCENSION%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23070b09%22%2C%22theme_color%22%3A%22%23070b09%22%2C%22description%22%3A%22Personal%20Development%20RPG%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%2C%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20100%20100%27%3E%3Crect%20width%3D%27100%27%20height%3D%27100%27%20fill%3D%27%23070b09%27%2F%3E%3Cpolygon%20points%3D%2750%2C10%2090%2C85%2050%2C68%2010%2C85%27%20fill%3D%27none%27%20stroke%3D%27%23c9aa69%27%20stroke-width%3D%276%27%2F%3E%3Ccircle%20cx%3D%2750%27%20cy%3D%2745%27%20r%3D%2712%27%20fill%3D%27%2387b99a%27%2F%3E%3C%2Fsvg%3E%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%7D%5D%7D">
+  
+  <!-- Embedded High-Resolution Tactical Icon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23070b09'/%3E%3Cpolygon points='50,12 88,86 50,70 12,86' fill='none' stroke='%23c9aa69' stroke-width='6'/%3E%3Ccircle cx='50' cy='46' r='10' fill='%2387b99a'/%3E%3C/svg%3E">
+
+  <style>
+    :root {
+      --bg: #070b09;
+      --bg-card: #0d1511;
+      --bg-elevated: #131f18;
+      --bg-panel: #0f1913;
+      --line: #223528;
+      --line-bright: #395540;
+      --line-gold: #5a4b2c;
+      --txt: #e6ede8;
+      --txt-dim: #bac7bd;
+      --muted: #7d9183;
+      --gold: #c9aa69;
+      --gold-bright: #e7c77d;
+      --gold-dark: #8c733f;
+      --green: #87b99a;
+      --green-bright: #a2d6b5;
+      --green-dark: #274030;
+      --red: #c9756b;
+      --red-bright: #e38a80;
+      --blue: #84a6c7;
+      --purple: #aa97ce;
+      --cyan: #74bfb4;
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    
+    body {
+      background: var(--bg);
+      background-image: 
+        radial-gradient(ellipse 90% 40% at 50% -10%, #1c3024, transparent 80%),
+        radial-gradient(circle at 100% 50%, #0d1b14 0%, transparent 40%),
+        radial-gradient(circle at 0% 80%, #121f17 0%, transparent 40%);
+      background-attachment: fixed;
+      color: var(--txt);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      padding-bottom: calc(76px + var(--safe-bottom));
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Container */
+    .app-wrap {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 12px 14px 24px;
+    }
+
+    /* Header Bar */
+    header.tactical-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 4px 12px;
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      background: rgba(7, 11, 9, 0.94);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 50;
+    }
+
+    .k-tag {
+      font-size: 9px;
+      letter-spacing: 2px;
+      font-weight: 800;
+      color: var(--gold);
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .k-tag::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green);
+    }
+
+    .brand-title {
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-icon {
+      background: var(--bg-elevated);
+      border: 1px solid var(--line);
+      color: var(--gold);
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      font-size: 15px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-icon:hover, .btn-icon:active {
+      border-color: var(--gold);
+      background: #1c2e23;
+    }
+
+    /* Hero / Dossier Card */
+    .hero-dossier {
+      margin-top: 12px;
+      background: linear-gradient(135deg, #14221a 0%, #0d1712 60%, #151b14 100%);
+      border: 1px solid var(--line-bright);
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-dossier::after {
+      content: 'CLASSIFIED // MI6 - BATCAVE';
+      position: absolute;
+      right: -24px;
+      bottom: 12px;
+      font-size: 8px;
+      letter-spacing: 2.5px;
+      color: rgba(201, 170, 105, 0.12);
+      font-weight: 900;
+      transform: rotate(-90deg);
+      pointer-events: none;
+    }
+
+    .dossier-top {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .avatar-frame {
+      width: 58px;
+      height: 58px;
+      border-radius: 12px;
+      background: #09100c;
+      border: 2px solid var(--gold);
+      display: grid;
+      place-items: center;
+      font-size: 28px;
+      color: var(--gold);
+      flex-shrink: 0;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+
+    .dossier-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .dossier-name {
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .dossier-meta {
+      font-size: 11px;
+      color: var(--txt-dim);
+      margin-top: 2px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .rank-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(201,170,105,0.15);
+      border: 1px solid var(--gold);
+      color: var(--gold-bright);
+      padding: 1px 7px;
+      border-radius: 4px;
+      font-weight: 800;
+      font-size: 10px;
+      letter-spacing: 1px;
+    }
+
+    .spec-pill {
+      background: rgba(135,185,154,0.12);
+      border: 1px solid var(--green);
+      color: var(--green);
+      padding: 1px 7px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    /* Core Metrics Grid */
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px dashed var(--line);
+    }
+
+    .stat-cell {
+      text-align: center;
+    }
+
+    .stat-cell b {
+      display: block;
+      color: var(--gold-bright);
+      font-size: 18px;
+      font-weight: 900;
+      line-height: 1.2;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .stat-cell span {
+      font-size: 9px;
+      letter-spacing: 1px;
+      color: var(--muted);
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    /* XP Progress Bar */
+    .xp-section {
+      margin-top: 14px;
+    }
+
+    .xp-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: var(--txt-dim);
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+
+    .progress-bar-wrap {
+      height: 8px;
+      background: #141f17;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #8c733f, #c9aa69 50%, #e7c77d 100%);
+      border-radius: 8px;
+      width: 0%;
+      transition: width 0.4s cubic-bezier(0.1, 0.9, 0.2, 1);
+      box-shadow: 0 0 10px rgba(201,170,105,0.4);
+    }
+
+    /* Bottom Navigation Bar */
+    nav.bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(7, 11, 9, 0.97);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-top: 1px solid var(--line-bright);
+      display: flex;
+      justify-content: space-around;
+      padding: 6px 4px calc(6px + var(--safe-bottom));
+      z-index: 90;
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    .nav-btn {
+      background: none;
+      border: none;
+      color: var(--muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      cursor: pointer;
+      padding: 6px 8px;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      min-width: 52px;
+      text-transform: uppercase;
+    }
+
+    .nav-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: transform 0.2s ease;
+    }
+
+    .nav-btn.active {
+      color: var(--gold-bright);
+      background: rgba(201, 170, 105, 0.08);
+    }
+
+    .nav-btn.active svg {
+      stroke: var(--gold-bright);
+      transform: translateY(-2px);
+    }
+
+    /* Views Framework */
+    .view-content {
+      display: none;
+      animation: fadeIn 0.25s ease-out;
+    }
+
+    .view-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Section Headings */
+    .sec-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin: 22px 2px 10px;
+    }
+
+    .sec-head h2 {
+      font-size: 12px;
+      letter-spacing: 2px;
+      color: var(--gold);
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .sec-head small {
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    /* Tactical Panels & Cards */
+    .panel {
+      background: var(--bg-card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .panel-title {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--gold-bright);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* Button System */
+    button {
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    .btn {
+      background: var(--bg-elevated);
+      color: var(--txt);
+      border: 1px solid var(--line-bright);
+      border-radius: 8px;
+      padding: 9px 13px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      touch-action: manipulation;
+    }
+
+    .btn:hover, .btn:active {
+      background: #1a2a20;
+      border-color: var(--gold);
+      color: #fff;
+    }
+
+    .btn.primary {
+      background: linear-gradient(135deg, #a6894a, #c9aa69);
+      color: #080d09;
+      border-color: var(--gold-bright);
+      font-weight: 800;
+    }
+
+    .btn.primary:hover, .btn.primary:active {
+      background: linear-gradient(135deg, #c9aa69, #e7c77d);
+      box-shadow: 0 0 12px rgba(201,170,105,0.4);
+    }
+
+    .btn.danger {
+      background: rgba(201,117,107,0.15);
+      border-color: var(--red);
+      color: var(--red-bright);
+    }
+
+    .btn.sm {
+      padding: 5px 9px;
+      font-size: 10px;
+      border-radius: 6px;
+    }
+
+    .btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn-group .btn {
+      flex: 1;
+      min-width: 110px;
+    }
+
+    /* Segmented Sub-Nav Controls */
+    .tab-pills {
+      display: flex;
+      background: #09110d;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 3px;
+      gap: 3px;
+      margin-bottom: 14px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .tab-pills::-webkit-scrollbar { display: none; }
+
+    .tab-pill {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      padding: 7px 10px;
+      border-radius: 7px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-align: center;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-pill.active {
+      background: var(--bg-elevated);
+      color: var(--gold-bright);
+      border: 1px solid var(--line-gold);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+
+    /* Divisions Grid */
+    .division-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .division-card {
+      background: var(--bg-card);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 12px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .division-card:hover, .division-card:active {
+      border-color: var(--green);
+      background: var(--bg-elevated);
+    }
+
+    .div-sigil {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      background: #101c15;
+      border: 1px solid var(--line-bright);
+      display: grid;
+      place-items: center;
+      color: var(--gold);
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .div-text b {
+      display: block;
+      font-size: 11px;
+      color: var(--txt);
+      line-height: 1.3;
+    }
+
+    .div-text small {
+      display: block;
+      font-size: 9px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .div-xp-tag {
+      font-size: 10px;
+      color: var(--gold);
+      font-weight: 800;
+      margin-top: 3px;
+    }
+
+    /* Attributes Hex / Bar System */
+    .attrs-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .attr-box {
+      background: #0d1511;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      padding: 10px;
+      text-align: center;
+      position: relative;
+    }
+
+    .attr-name {
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--gold);
+      letter-spacing: 1px;
+    }
+
+    .attr-val {
+      font-size: 22px;
+      font-weight: 900;
+      color: #fff;
+      margin: 2px 0;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .attr-desc {
+      font-size: 8.5px;
+      color: var(--muted);
+      line-height: 1.3;
+    }
+
+    /* Missions / Quests */
+    .quest-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px;
+      background: #0d1611;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      margin-bottom: 8px;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .quest-item:hover {
+      border-color: var(--line-bright);
+    }
+
+    .quest-item.done {
+      background: #090e0b;
+      opacity: 0.65;
+      border-color: #17241b;
+    }
+
+    .quest-item.done .q-title {
+      text-decoration: line-through;
+      color: var(--muted);
+    }
+
+    .quest-item.missed {
+      background: #140d0c;
+      border-color: #381f1b;
+      opacity: 0.8;
+    }
+
+    .quest-item.missed .q-title {
+      color: var(--red);
+    }
+
+    .q-checkbox {
+      margin-top: 2px;
+      width: 18px;
+      height: 18px;
+      border-radius: 4px;
+      border: 2px solid var(--gold);
+      background: transparent;
+      appearance: none;
+      -webkit-appearance: none;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+    }
+
+    .q-checkbox:checked {
+      background: var(--gold);
+    }
+
+    .q-checkbox:checked::after {
+      content: '✓';
+      color: #070b09;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .q-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .q-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--txt);
+      word-break: break-word;
+    }
+
+    .q-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+      margin-top: 4px;
+      font-size: 9px;
+    }
+
+    .badge-tag {
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .badge-study { background: rgba(145,173,201,0.15); color: var(--blue); border: 1px solid rgba(145,173,201,0.3); }
+    .badge-social { background: rgba(170,151,206,0.15); color: var(--purple); border: 1px solid rgba(170,151,206,0.3); }
+    .badge-combat { background: rgba(201,117,107,0.15); color: var(--red); border: 1px solid rgba(201,117,107,0.3); }
+    .badge-health { background: rgba(116,191,180,0.15); color: var(--cyan); border: 1px solid rgba(116,191,180,0.3); }
+    .badge-spirit { background: rgba(201,170,105,0.15); color: var(--gold); border: 1px solid rgba(201,170,105,0.3); }
+    .badge-discipline { background: rgba(135,185,154,0.15); color: var(--green); border: 1px solid rgba(135,185,154,0.3); }
+
+    .q-xp-badge {
+      font-size: 11px;
+      color: var(--gold-bright);
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .q-actions {
+      display: flex;
+      gap: 4px;
+      margin-left: 6px;
+    }
+
+    .q-btn-tiny {
+      background: transparent;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      border-radius: 4px;
+      padding: 2px 6px;
+      font-size: 9px;
+      cursor: pointer;
+    }
+
+    .q-btn-tiny:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    /* Boss System */
+    .boss-card {
+      background: linear-gradient(145deg, #18221b, #0f1712);
+      border: 1px solid var(--line-gold);
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .boss-card.defeated {
+      border-color: var(--line);
+      opacity: 0.75;
+      background: #0c130f;
+    }
+
+    .boss-badge {
+      font-size: 8.5px;
+      letter-spacing: 1.5px;
+      color: var(--gold);
+      font-weight: 800;
+      text-transform: uppercase;
+      display: inline-block;
+      margin-bottom: 4px;
+    }
+
+    .boss-name {
+      font-size: 16px;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: 0.5px;
+    }
+
+    .boss-desc {
+      font-size: 11px;
+      color: var(--txt-dim);
+      margin: 4px 0 10px;
+      line-height: 1.4;
+    }
+
+    .boss-hp-bar {
+      height: 9px;
+      background: #241a1a;
+      border: 1px solid #4a2828;
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 8px 0 12px;
+    }
+
+    .boss-hp-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #c9756b, #e38a80);
+      width: 100%;
+      transition: width 0.3s ease;
+    }
+
+    .boss-objective {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--txt);
+      margin: 6px 0;
+      padding: 4px 0;
+    }
+
+    /* Medals & Honours (Replacing Armory) */
+    .medals-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .medal-card {
+      background: #0d1511;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 12px;
+      display: flex;
+      gap: 10px;
+      position: relative;
+      transition: all 0.2s ease;
+    }
+
+    .medal-card.unlocked {
+      border-color: var(--gold);
+      background: linear-gradient(135deg, #16241b, #0d1511);
+      box-shadow: 0 4px 14px rgba(201,170,105,0.15);
+    }
+
+    .medal-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #09100c;
+      border: 1px solid var(--line);
+      display: grid;
+      place-items: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .medal-card.unlocked .medal-icon {
+      border-color: var(--gold-bright);
+      color: var(--gold-bright);
+      box-shadow: 0 0 12px rgba(201,170,105,0.3);
+    }
+
+    .medal-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .medal-title {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--txt);
+      line-height: 1.2;
+    }
+
+    .medal-card.unlocked .medal-title {
+      color: var(--gold-bright);
+    }
+
+    .medal-rarity {
+      font-size: 8px;
+      letter-spacing: 1px;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    .rarity-bronze { color: #c99369; }
+    .rarity-silver { color: #c4d1c9; }
+    .rarity-gold { color: var(--gold-bright); }
+    .rarity-platinum { color: #9fd7e3; }
+    .rarity-legendary { color: #f28cf0; text-shadow: 0 0 8px rgba(242,140,240,0.4); }
+
+    .medal-req {
+      font-size: 9px;
+      color: var(--muted);
+      margin-top: 4px;
+      line-height: 1.3;
+    }
+
+    .medal-date {
+      font-size: 8px;
+      color: var(--green);
+      margin-top: 4px;
+      font-weight: 700;
+    }
+
+    /* Campaign & Chronicle */
+    .chapter-node {
+      background: #0c1410;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 13px;
+      margin-bottom: 9px;
+      transition: all 0.2s ease;
+    }
+
+    .chapter-node.unlocked {
+      border-color: var(--gold-dark);
+      background: #131f18;
+    }
+
+    .chapter-node.claimed {
+      border-color: var(--green-dark);
+      background: #0e1712;
+      opacity: 0.85;
+    }
+
+    .chapter-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+
+    .chapter-head b {
+      font-size: 12px;
+      color: var(--gold);
+    }
+
+    .chapter-desc {
+      font-size: 10px;
+      color: var(--txt-dim);
+      margin: 4px 0 8px;
+      line-height: 1.4;
+    }
+
+    .chronicle-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 10px;
+      max-height: 380px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .chronicle-entry {
+      background: #0a110d;
+      border-left: 2px solid var(--gold);
+      padding: 8px 10px;
+      border-radius: 0 6px 6px 0;
+      font-size: 10px;
+    }
+
+    .chronicle-date {
+      font-size: 8px;
+      color: var(--muted);
+      letter-spacing: 0.5px;
+    }
+
+    .chronicle-text {
+      color: var(--txt);
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    /* Analytics / Charts */
+    .chart-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .radar-svg, .donut-svg {
+      width: 100%;
+      max-height: 250px;
+    }
+
+    /* Forms & Modal Dialogs */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.78);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .modal-box {
+      background: #0f1913;
+      border: 1px solid var(--line-gold);
+      border-radius: 14px;
+      padding: 20px;
+      width: 100%;
+      max-width: 520px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.6);
+    }
+
+    .modal-title {
+      font-size: 14px;
+      font-weight: 900;
+      color: var(--gold-bright);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--muted);
+      margin-bottom: 5px;
+      text-transform: uppercase;
+    }
+
+    input[type=text], input[type=number], select, textarea {
+      width: 100%;
+      background: #070e0a;
+      border: 1px solid var(--line-bright);
+      border-radius: 8px;
+      padding: 10px 12px;
+      color: var(--txt);
+      font-family: inherit;
+      font-size: 12px;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--gold);
+    }
+
+    /* Toast Notification */
+    .toast-tray {
+      position: fixed;
+      top: 68px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 110;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      pointer-events: none;
+      width: 90%;
+      max-width: 420px;
+    }
+
+    .toast-msg {
+      background: #14241b;
+      border: 1px solid var(--gold);
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      animation: toastSlide 0.3s cubic-bezier(0.1, 0.9, 0.2, 1);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    @keyframes toastSlide {
+      from { opacity: 0; transform: translateY(-12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Responsive Queries */
+    @media (max-width: 520px) {
+      .division-grid, .medals-grid, .chart-container {
+        grid-template-columns: 1fr;
+      }
+      .attrs-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .brand-title {
+        font-size: 15px;
+      }
+      .hero-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+    }
+
+    @media print {
+      body { background: #fff !important; color: #000 !important; }
+      nav.bottom-nav, .btn, .btn-icon, header.tactical-header { display: none !important; }
+      .panel, .hero-dossier { border-color: #ccc !important; box-shadow: none !important; background: #fff !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Toast Notification Tray -->
+  <div id="toastTray" class="toast-tray" aria-live="polite"></div>
+
+  <div class="app-wrap">
+
+    <!-- Tactical Top Header -->
+    <header class="tactical-header">
+      <div>
+        <div class="k-tag" id="statusPill">OPERATIVE STATUS // ACTIVE</div>
+        <div class="brand-title" id="brandTitle" onclick="openProfileModal()">
+          <span style="color:var(--gold)">ASCENSION</span> <small style="font-size:11px;color:var(--muted)">v1.0</small>
+        </div>
+      </div>
+      <div class="header-right">
+        <button class="btn-icon" title="Quick Sitrep Report" onclick="openReportModal()" aria-label="Sitrep Report">
+          📋
+        </button>
+        <button class="btn-icon" title="System Settings & Backup" onclick="openSettingsModal()" aria-label="Settings">
+          ⚙
+        </button>
+      </div>
+    </header>
+
+    <!-- Operative Hero Dossier -->
+    <section class="hero-dossier" id="heroDossier">
+      <div class="dossier-top">
+        <div class="avatar-frame" id="avatarDisplay" onclick="openProfileModal()" title="Tap to change avatar">
+          🕶️
+        </div>
+        <div class="dossier-info">
+          <div class="k-tag" style="font-size:8px">CLEARANCE DOSSIER</div>
+          <div class="dossier-name" id="codenameDisplay">THE ASCENDANT</div>
+          <div class="dossier-meta">
+            <span class="rank-badge" id="rankBadge">RANK E</span>
+            <span>LEVEL <b id="lvlDisplay" style="color:#fff">01</b></span>
+            <span class="spec-pill" id="specPill">SCHOLAR</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat-cell"><b id="totalXpDisplay">0</b><span>TOTAL XP</span></div>
+        <div class="stat-cell"><b id="clearedCountDisplay">0/0</b><span>CLEARED</span></div>
+        <div class="stat-cell"><b id="streakDisplay">0</b><span>DAY STREAK</span></div>
+        <div class="stat-cell"><b id="bossesBeatenDisplay">0</b><span>BOSSES SLAIN</span></div>
+      </div>
+
+      <div class="xp-section">
+        <div class="xp-labels">
+          <span>PROGRESS TO LEVEL <span id="nextLvlDisplay">2</span></span>
+          <span id="xpBarText">0 / 100 XP</span>
+        </div>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill" id="xpProgressBar"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Navigation Tab Views -->
+
+    <!-- ================= VIEW 1: OPERATIVE & ATTRIBUTES ================= -->
+    <main id="view-operative" class="view-content active">
+      <div class="sec-head">
+        <h2>01 // SIX RPG ATTRIBUTES</h2>
+        <small>CORE CAPABILITIES</small>
+      </div>
+      <div class="attrs-grid" id="attrsGrid"></div>
+
+      <div class="sec-head">
+        <h2>02 // SIX OPERATIONAL DIVISIONS</h2>
+        <small>INDEPENDENT DOMAINS</small>
+      </div>
+      <div class="division-grid" id="divisionGrid"></div>
+
+      <div class="sec-head">
+        <h2>03 // SKILL TREE NETWORK</h2>
+        <small>OPERATIVE CAPABILITIES</small>
+      </div>
+      <div id="skillTreesContainer"></div>
+    </main>
+
+    <!-- ================= VIEW 2: MISSION CONTROL ================= -->
+    <section id="view-missions" class="view-content">
+      <div class="sec-head">
+        <h2>MISSION CONTROL</h2>
+        <small id="missionDateLabel"></small>
+      </div>
+
+      <div class="tab-pills">
+        <button class="tab-pill active" onclick="switchMissionFilter('daily', this)">Daily</button>
+        <button class="tab-pill" onclick="switchMissionFilter('weekly', this)">Weekly</button>
+        <button class="tab-pill" onclick="switchMissionFilter('monthly', this)">Monthly</button>
+        <button class="tab-pill" onclick="switchMissionFilter('all', this)">All</button>
+      </div>
+
+      <div id="missionList"></div>
+
+      <div style="margin-top:14px">
+        <button class="btn primary" style="width:100%" onclick="openAddMissionModal()">+ CREATE NEW MISSION</button>
+      </div>
+    </section>
+
+    <!-- ================= VIEW 3: BOSS ENCOUNTERS & NEMESIS ================= -->
+    <section id="view-bosses" class="view-content">
+      <div class="sec-head">
+        <h2>WEEKLY ROTATING BOSS</h2>
+        <small id="weeklyBossTag">THREAT LEVEL S</small>
+      </div>
+
+      <div class="boss-card" id="weeklyBossCard">
+        <span class="boss-badge">BEHAVIORAL THREAT</span>
+        <div class="boss-name" id="weeklyBossTitle">THE PROCRASTINATOR</div>
+        <div class="boss-desc" id="weeklyBossDesc">Defeat avoidance by initiating prioritized work before waiting for motivation.</div>
+        <div class="boss-hp-bar">
+          <div class="boss-hp-fill" id="weeklyBossHp"></div>
+        </div>
+        <div id="weeklyBossSteps"></div>
+        <div style="margin-top:10px" class="btn-group">
+          <button class="btn primary" id="weeklyBossBtn" onclick="handleWeeklyBossAction()">ACCEPT BOSS</button>
+        </div>
+      </div>
+
+      <div class="sec-head">
+        <h2>CUSTOM BOSS FIGHTS</h2>
+        <small>PERSONAL ADVERSARIES</small>
+      </div>
+      <div id="customBossesList"></div>
+      <button class="btn primary" style="width:100%;margin-bottom:18px" onclick="openAddBossModal()">+ ENGAGE NEW CUSTOM BOSS</button>
+
+      <div class="sec-head">
+        <h2>NEMESIS DATABASE</h2>
+        <small>PERMANENT BEHAVIORAL ARCHETYPES</small>
+      </div>
+      <div class="panel">
+        <div style="font-size:10px;color:var(--muted);margin-bottom:10px">
+          Adversaries represent recurring behavioral patterns. Defeat them through concrete real-world victories.
+        </div>
+        <div id="nemesisList"></div>
+      </div>
+    </section>
+
+    <!-- ================= VIEW 4: MEDALS & HONOURS ================= -->
+    <section id="view-medals" class="view-content">
+      <div class="sec-head">
+        <h2>MEDALS & HONOURS</h2>
+        <small>REPLACES Q DIVISION ARMORY</small>
+      </div>
+
+      <div class="tab-pills">
+        <button class="tab-pill active" onclick="switchMedalFilter('all', this)">All</button>
+        <button class="tab-pill" onclick="switchMedalFilter('unlocked', this)">Earned</button>
+        <button class="tab-pill" onclick="switchMedalFilter('locked', this)">Locked</button>
+      </div>
+
+      <div class="medals-grid" id="medalsGrid"></div>
+    </section>
+
+    <!-- ================= VIEW 5: CAMPAIGN & CHRONICLE ================= -->
+    <section id="view-campaign" class="view-content">
+      <div class="sec-head">
+        <h2>PERMANENT CAMPAIGN MAP</h2>
+        <small>OPERATION: LONG GAME</small>
+      </div>
+      <div id="campaignChaptersList"></div>
+
+      <div class="sec-head">
+        <h2>WEEKLY SITREP NARRATIVE</h2>
+        <small>HQ INTEL DISPATCH</small>
+      </div>
+      <div class="panel" id="weeklySitrepCard">
+        <!-- Procedural weekly narrative -->
+      </div>
+
+      <div class="sec-head">
+        <h2>OPERATIVE CHRONICLE</h2>
+        <small>CHRONOLOGICAL TIMELINE</small>
+      </div>
+      <div class="panel">
+        <div style="font-size:10px;color:var(--muted);margin-bottom:6px">
+          Verifiable record of completed operations, boss victories and clearance elevations.
+        </div>
+        <div class="chronicle-list" id="chronicleList"></div>
+      </div>
+    </section>
+
+    <!-- ================= VIEW 6: ANALYTICS & REWARDS ================= -->
+    <section id="view-analytics" class="view-content">
+      <div class="sec-head">
+        <h2>INTELLIGENCE & METRICS</h2>
+        <small>CIRCULAR & RADAR</small>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">ATTRIBUTE RADAR CHART</span>
+          <span style="font-size:9px;color:var(--muted)">INT · STR · AGI · VIT · WIS · DIS</span>
+        </div>
+        <div class="chart-container">
+          <svg id="radarSvg" class="radar-svg" viewBox="0 0 300 260" aria-label="Tactical Attribute Radar"></svg>
+          <div id="radarLegend" style="font-size:10px;color:var(--txt-dim);line-height:1.8"></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">DIVISION XP DISTRIBUTION</span>
+          <span style="font-size:9px;color:var(--muted)">CIRCULAR XP CHART</span>
+        </div>
+        <div class="chart-container">
+          <svg id="donutSvg" class="donut-svg" viewBox="0 0 240 240" aria-label="Division Donut Chart"></svg>
+          <div id="donutLegend" style="font-size:10px;color:var(--txt-dim);line-height:1.8"></div>
+        </div>
+      </div>
+
+      <div class="sec-head">
+        <h2>PERSONAL RECORDS & STATISTICS</h2>
+        <small>ALL-TIME BENCHMARKS</small>
+      </div>
+      <div class="panel" id="personalRecordsPanel"></div>
+
+      <div class="sec-head">
+        <h2>CUSTOM REWARDS & MERITS</h2>
+        <small>ASCENSION TOKENS</small>
+      </div>
+      <div class="panel">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <div>
+            <b style="color:var(--gold-bright);font-size:14px" id="meritsBalance">0 MERITS</b>
+            <div style="font-size:9px;color:var(--muted)">Earned through verified operations (1 Merit per 10 XP)</div>
+          </div>
+          <button class="btn sm primary" onclick="openAddRewardModal()">+ Add Reward</button>
+        </div>
+        <div id="rewardsList"></div>
+      </div>
+
+      <div class="sec-head">
+        <h2>DATA BACKUP & DEPLOYMENT</h2>
+        <small>DATA SAFETY</small>
+      </div>
+      <div class="panel">
+        <div class="btn-group">
+          <button class="btn primary" onclick="exportDataBackup()">EXPORT JSON BACKUP</button>
+          <button class="btn" onclick="document.getElementById('importFileInput').click()">IMPORT JSON BACKUP</button>
+          <button class="btn" onclick="openReportModal()">GENERATE SITREP</button>
+        </div>
+        <input type="file" id="importFileInput" style="display:none" accept=".json" onchange="handleImportBackup(event)">
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Bottom Navigation Bar -->
+  <nav class="bottom-nav">
+    <button class="nav-btn active" id="nav-operative" onclick="switchNavTab('operative')">
+      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Dossier</span>
+    </button>
+    <button class="nav-btn" id="nav-missions" onclick="switchNavTab('missions')">
+      <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      <span>Missions</span>
+    </button>
+    <button class="nav-btn" id="nav-bosses" onclick="switchNavTab('bosses')">
+      <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      <span>Bosses</span>
+    </button>
+    <button class="nav-btn" id="nav-medals" onclick="switchNavTab('medals')">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+      <span>Honours</span>
+    </button>
+    <button class="nav-btn" id="nav-campaign" onclick="switchNavTab('campaign')">
+      <svg viewBox="0 0 24 24"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+      <span>Campaign</span>
+    </button>
+    <button class="nav-btn" id="nav-analytics" onclick="switchNavTab('analytics')">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      <span>Intel</span>
+    </button>
+  </nav>
+
+  <!-- ================= MODALS ================= -->
+
+  <!-- Modal: Add / Edit Mission -->
+  <div class="modal-overlay" id="missionModal">
+    <div class="modal-box">
+      <div class="modal-title">
+        <span id="missionModalHeading">CREATE NEW MISSION</span>
+        <button class="btn sm" onclick="closeModal('missionModal')">✕</button>
+      </div>
+      <input type="hidden" id="editMissionId" value="">
+      <div class="form-group">
+        <label class="form-label" for="missionInputTitle">Mission Objective</label>
+        <input type="text" id="missionInputTitle" placeholder="e.g. Deep focus study block: 45m active recall">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="missionInputDivision">Operational Division</label>
+        <select id="missionInputDivision">
+          <option value="study">MI6 Intelligence Academy (Academics & Exams)</option>
+          <option value="social">00 Field Operations (Social Intelligence)</option>
+          <option value="combat">Batcave: Combat Lab (MMA & Strength)</option>
+          <option value="health">Wayne Conditioning Protocol (Health & Sleep)</option>
+          <option value="spirit">The Inner Sanctum (Devotion & Naam Jap)</option>
+          <option value="discipline">Alfred's Protocol (Discipline & Order)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="missionInputTimeframe">Timeframe</label>
+        <select id="missionInputTimeframe">
+          <option value="daily">Daily Mission</option>
+          <option value="weekly">Weekly Strategic Mission</option>
+          <option value="monthly">Monthly Objective</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="missionInputDifficulty">Difficulty & XP Reward</label>
+        <select id="missionInputDifficulty">
+          <option value="Trivial:5">Trivial (+5 XP)</option>
+          <option value="Standard:10" selected>Standard (+10 XP)</option>
+          <option value="Challenging:15">Challenging (+15 XP)</option>
+          <option value="Elite:25">Elite (+25 XP)</option>
+          <option value="Legendary:40">Legendary (+40 XP)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="missionInputPriority">Priority</label>
+        <select id="missionInputPriority">
+          <option value="P1">P1 - High / Urgent</option>
+          <option value="P2" selected>P2 - Normal Routine</option>
+          <option value="P3">P3 - Low / Secondary</option>
+        </select>
+      </div>
+      <div class="btn-group" style="margin-top:16px">
+        <button class="btn primary" onclick="saveMissionForm()">SAVE MISSION</button>
+        <button class="btn" onclick="closeModal('missionModal')">CANCEL</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Add / Edit Custom Boss -->
+  <div class="modal-overlay" id="bossModal">
+    <div class="modal-box">
+      <div class="modal-title">
+        <span>ENGAGE ADVERSARY / BOSS</span>
+        <button class="btn sm" onclick="closeModal('bossModal')">✕</button>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="bossInputName">Adversary Name</label>
+        <input type="text" id="bossInputName" placeholder="e.g. THE ACADEMIC PROCRASTINATOR">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="bossInputDesc">Nature of Adversary</label>
+        <textarea id="bossInputDesc" placeholder="Describe the resistance or behavioral challenge this encounter represents."></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="bossInputSteps">Victory Objectives (Semicolon-Separated)</label>
+        <input type="text" id="bossInputSteps" placeholder="Objective 1; Objective 2; Objective 3">
+        <small style="font-size:9px;color:var(--muted);display:block;margin-top:3px">Separate each milestone with a semicolon (;)</small>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="bossInputThreat">Threat Clearance</label>
+        <select id="bossInputThreat">
+          <option value="Rank D:25">Rank D // Minor Hazard (+25 XP)</option>
+          <option value="Rank C:40" selected>Rank C // Moderate Obstacle (+40 XP)</option>
+          <option value="Rank B:60">Rank B // Severe Resistance (+60 XP)</option>
+          <option value="Rank A:85">Rank A // Formidable Crisis (+85 XP)</option>
+          <option value="Rank S:120">Rank S // Apex Nemesis (+120 XP)</option>
+        </select>
+      </div>
+      <div class="btn-group" style="margin-top:16px">
+        <button class="btn primary" onclick="saveCustomBoss()">DEPLOY ENCOUNTER</button>
+        <button class="btn" onclick="closeModal('bossModal')">CANCEL</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Operative Profile & Avatar -->
+  <div class="modal-overlay" id="profileModal">
+    <div class="modal-box">
+      <div class="modal-title">
+        <span>OPERATIVE DOSSIER // EDIT</span>
+        <button class="btn sm" onclick="closeModal('profileModal')">✕</button>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="profileCodename">Codename</label>
+        <input type="text" id="profileCodename" placeholder="e.g. THE ASCENDANT">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="profileCallsign">Callsign / Classification</label>
+        <input type="text" id="profileCallsign" placeholder="e.g. 00 OPERATIVE // SHADOW CADRE">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="profileSpec">Primary Specialisation</label>
+        <select id="profileSpec">
+          <option value="scholar">MI6 Scholar & Cryptanalyst (INT & WIS Focus)</option>
+          <option value="field">00 Field Specialist (AGI & DIS Focus)</option>
+          <option value="vanguard">Batcave Vanguard (STR & AGI Focus)</option>
+          <option value="bio">Wayne Bio-Optimizer (VIT & STR Focus)</option>
+          <option value="mystic">Sanctum Mystic & Contemplative (WIS & DIS Focus)</option>
+          <option value="executor">Alfred's Master Executor (DIS & INT Focus)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tactical Avatar</label>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px" id="avatarPicker">
+          <!-- Avatars populated in JS -->
+        </div>
+      </div>
+      <div class="btn-group" style="margin-top:16px">
+        <button class="btn primary" onclick="saveProfileForm()">UPDATE DOSSIER</button>
+        <button class="btn" onclick="closeModal('profileModal')">CANCEL</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Custom Rewards -->
+  <div class="modal-overlay" id="rewardModal">
+    <div class="modal-box">
+      <div class="modal-title">
+        <span>CUSTOM REWARD / MERIT</span>
+        <button class="btn sm" onclick="closeModal('rewardModal')">✕</button>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="rewardTitle">Reward Title</label>
+        <input type="text" id="rewardTitle" placeholder="e.g. 1hr Guilt-free reading / Gaming">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="rewardCost">Cost in Merits</label>
+        <input type="number" id="rewardCost" value="10" min="1" max="500">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="rewardDesc">Description / Conditions</label>
+        <input type="text" id="rewardDesc" placeholder="e.g. Enjoy after finishing all P1 missions">
+      </div>
+      <div class="btn-group" style="margin-top:16px">
+        <button class="btn primary" onclick="saveCustomReward()">CREATE REWARD</button>
+        <button class="btn" onclick="closeModal('rewardModal')">CANCEL</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Sitrep Field Report -->
+  <div class="modal-overlay" id="reportModal">
+    <div class="modal-box" style="max-width:580px">
+      <div class="modal-title">
+        <span>OPERATIVE SITREP REPORT</span>
+        <button class="btn sm" onclick="closeModal('reportModal')">✕</button>
+      </div>
+      <textarea id="reportTextarea" style="min-height:240px;font-family:monospace;font-size:10px;line-height:1.5" readonly></textarea>
+      <div class="btn-group" style="margin-top:14px">
+        <button class="btn primary" onclick="copySitrepReport()">COPY TO CLIPBOARD</button>
+        <button class="btn" onclick="window.print()">PRINT / SAVE PDF</button>
+        <button class="btn" onclick="closeModal('reportModal')">CLOSE</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Settings & Data Customization -->
+  <div class="modal-overlay" id="settingsModal">
+    <div class="modal-box">
+      <div class="modal-title">
+        <span>SYSTEM SETTINGS & CUSTOMIZATION</span>
+        <button class="btn sm" onclick="closeModal('settingsModal')">✕</button>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="settingsProjectName">Project Display Name</label>
+        <input type="text" id="settingsProjectName">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="settingsXpMultiplier">XP Calibration Multiplier</label>
+        <select id="settingsXpMultiplier">
+          <option value="0.5">0.5x (Strict Hardcore Pacing)</option>
+          <option value="1.0" selected>1.0x (Standard Calibrated Pacing)</option>
+          <option value="1.25">1.25x (Accelerated Progression)</option>
+          <option value="1.5">1.5x (High Momentum Pacing)</option>
+        </select>
+      </div>
+      <div class="sec-head" style="margin:16px 0 8px">
+        <h2 style="font-size:10px">DATA MIGRATION & RECOVERY</h2>
+      </div>
+      <div class="btn-group">
+        <button class="btn primary" onclick="exportDataBackup()">EXPORT FULL BACKUP</button>
+        <button class="btn" onclick="document.getElementById('importFileInput').click()">IMPORT BACKUP</button>
+      </div>
+      <div style="margin-top:16px;padding-top:12px;border-top:1px dashed var(--line)">
+        <button class="btn danger sm" style="width:100%" onclick="openResetConfirmModal()">DANGER: SAFE FACTORY RESET</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Reset Confirmation (No browser prompt) -->
+  <div class="modal-overlay" id="resetConfirmModal">
+    <div class="modal-box" style="max-width:420px">
+      <div class="modal-title" style="color:var(--red-bright)">
+        <span>CONFIRM SYSTEM RESET</span>
+        <button class="btn sm" onclick="closeModal('resetConfirmModal')">✕</button>
+      </div>
+      <p style="font-size:11px;color:var(--txt-dim);line-height:1.5;margin-bottom:12px">
+        This action restores the operative environment to factory baseline. An emergency backup will be downloaded automatically before reset.
+      </p>
+      <div class="form-group">
+        <label class="form-label" for="resetConfirmationInput">Type "RESET" below to confirm</label>
+        <input type="text" id="resetConfirmationInput" placeholder="RESET">
+      </div>
+      <div class="btn-group" style="margin-top:14px">
+        <button class="btn danger" onclick="executeConfirmedReset()">PROCEED WITH RESET</button>
+        <button class="btn" onclick="closeModal('resetConfirmModal')">CANCEL</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Inline Application Logic -->
+  <script>
+    // ==========================================
+    // CONSTANTS & VOCABULARY ENGINE
+    // ==========================================
+    const STORAGE_KEY_V1 = 'ascension_v1_0';
+    const LEGACY_STORAGE_KEYS = ['ascension_v03', 'ascension_v04'];
+
+    const DEFAULT_AREAS = {
+      study: 'MI6: Intelligence Academy',
+      social: '00 Field Operations',
+      combat: 'Batcave: Combat Lab',
+      health: 'Wayne Conditioning Protocol',
+      spirit: 'The Inner Sanctum',
+      discipline: "Alfred's Protocol"
+    };
+
+    const ATTR_LABELS = {
+      int: 'INT · Intelligence',
+      str: 'STR · Strength',
+      agi: 'AGI · Agility',
+      vit: 'VIT · Vitality',
+      wis: 'WIS · Wisdom',
+      dis: 'DIS · Discipline'
+    };
+
+    const ATTR_DESCRIPTIONS = {
+      int: 'Analysis, examinations, active recall, strategic reasoning',
+      str: 'Physical power, MMA foundation, athletic conditioning',
+      agi: 'Social dexterity, speed, tactical communication, reflexes',
+      vit: 'Sleep resilience, nutrition, recovery, biological stamina',
+      wis: 'Inner stillness, spiritual depth, prayer, equanimity',
+      dis: 'Habit execution, hygiene, daily order, unbreakable standards'
+    };
+
+    const AVATAR_OPTIONS = ['🕶️', '🦇', '⚔️', 'ॐ', '✦', '♜', '🎯', '🛡️', '♟️', '⚡'];
+
+    const DEFAULT_DAILY_MISSIONS = [
+      { id: 'm-def-1', title: 'MI6 Strategic Briefing · Deep study block (45m)', xp: 15, area: 'study', attr: 'int', difficulty: 'Standard', priority: 'P1', done: false, timeframe: 'daily' },
+      { id: 'm-def-2', title: 'Intelligence Analysis · Active recall & PYQs review', xp: 15, area: 'study', attr: 'int', difficulty: 'Standard', priority: 'P1', done: false, timeframe: 'daily' },
+      { id: 'm-def-3', title: 'Inner Sanctum · Naam Jap / devotional stillness (20m)', xp: 10, area: 'spirit', attr: 'wis', difficulty: 'Standard', priority: 'P1', done: false, timeframe: 'daily' },
+      { id: 'm-def-4', title: 'Batcave Combat Lab · MMA conditioning / strength session', xp: 15, area: 'combat', attr: 'str', difficulty: 'Standard', priority: 'P2', done: false, timeframe: 'daily' },
+      { id: 'm-def-5', title: 'Wayne Conditioning · Nutrient density & 8hr sleep protocol', xp: 10, area: 'health', attr: 'vit', difficulty: 'Standard', priority: 'P2', done: false, timeframe: 'daily' },
+      { id: 'm-def-6', title: '00 Field Operations · Social intelligence & active listening', xp: 10, area: 'social', attr: 'agi', difficulty: 'Standard', priority: 'P2', done: false, timeframe: 'daily' },
+      { id: 'm-def-7', title: "Alfred's Protocol · Environmental order & personal hygiene", xp: 10, area: 'discipline', attr: 'dis', difficulty: 'Standard', priority: 'P1', done: false, timeframe: 'daily' }
+    ];
+
+    const WEEKLY_BEHAVIORAL_BOSSES = [
+      { name: 'THE PROCRASTINATOR', desc: 'Defeat delay by starting before motivation arrives.', steps: ['Start your priority study block within 10 minutes of schedule', 'Complete one uninterrupted 30-minute sprint', 'Conquer the single task you have postponed this week'], xp: 50 },
+      { name: 'THE DISTRACTOR', desc: 'Shield cognitive bandwidth against ambient noise and cheap stimulation.', steps: ['Execute a 60-minute completely phone-free study operation', 'Keep phone in secondary room during high-focus task', 'Record and neutralize 3 distraction triggers resisted'], xp: 50 },
+      { name: 'THE COMFORT ZONE', desc: 'Embrace deliberate, structured resistance to forge resilience.', steps: ['Complete planned heavy physical training session', 'Tackle your hardest exam topic for 30 minutes', 'Confront one constructive social conversation avoided'], xp: 50 },
+      { name: 'THE INCONSISTENCY', desc: 'Prove routines survive ordinary and low-energy days alike.', steps: ['Execute core morning discipline protocol without negotiation', 'Maintain 20 minutes unbroken Naam Jap / contemplation', 'Pre-plan tomorrow’s primary mission before sleep'], xp: 50 },
+      { name: 'THE OVERTHINKER', desc: 'Replace paralytic internal rumination with decisive execution.', steps: ['Impose a strict 5-minute decision limit on an ambiguous task', 'Take one immediate, irrevocable tactical step forward', 'Write a one-sentence post-action lesson'], xp: 50 },
+      { name: 'THE DOUBT ENGINE', desc: 'Perform the work without demanding premature validation.', steps: ['Attempt the most intimidating analytical problem set', 'Log 3 concrete proofs of your historical progress', 'Respond to an operational mistake with clinical composure'], xp: 50 },
+      { name: 'THE CHAOS BROKER', desc: 'Restore tactical order when pressure mounts.', steps: ['Isolate exactly 3 daily priorities and execute P1 first', 'Restore workspace and living environment to immaculate order', 'Perform reflective evening sitrep review'], xp: 50 },
+      { name: 'THE PERFECTIONIST TRAP', desc: 'Finish and submit meaningful work rather than endlessly refining.', steps: ['Complete one task to 85% standard and ship it', 'Limit review pass to a single structured pass', 'Celebrate closure over theoretical perfection'], xp: 50 }
+    ];
+
+    const PERMANENT_NEMESES = [
+      { id: 'nem-1', name: 'THE PROCRASTINATOR', threat: 'Delay and avoidance', remedy: 'Initiate the priority task within 60 seconds of thought.' },
+      { id: 'nem-2', name: 'THE DISTRACTOR', threat: 'Attention fragmentation', remedy: 'Establish isolated phone-free field conditions.' },
+      { id: 'nem-3', name: 'THE PERFECTIONIST', threat: 'Fear of imperfect attempts', remedy: 'Deliver substantive execution over flawless theory.' },
+      { id: 'nem-4', name: 'THE COMFORT ZONE', threat: 'Avoidance of meaningful load', remedy: 'Deliberately step into constructive difficulty daily.' },
+      { id: 'nem-5', name: 'THE DOUBT ENGINE', threat: 'Self-questioning without action', remedy: 'Ground belief in verified completed actions.' },
+      { id: 'nem-6', name: 'THE CHAOS BROKER', threat: 'Disorder and scattered focus', remedy: 'Enforce Alfred’s daily protocol and triage priorities.' }
+    ];
+
+    const MEDAL_CATALOG = [
+      { id: 'med-first-blood', title: 'FIRST BLOOD', rarity: 'bronze', icon: '⚔️', desc: 'Cleared your very first operational mission.', check: (d) => getLifetimeClearedCount(d) >= 1 },
+      { id: 'med-recruit-lvl', title: 'CLEARANCE D', rarity: 'bronze', icon: '🎖️', desc: 'Achieved Level 5 clearance rank.', check: (d) => getLevel(d.xp) >= 5 },
+      { id: 'med-study-initiate', title: 'ACADEMY INITIATE', rarity: 'bronze', icon: '📚', desc: 'Earned 100+ XP in MI6 Intelligence Academy.', check: (d) => (d.skillXP.study || 0) >= 100 },
+      { id: 'med-combat-recruit', title: 'COMBAT FOUNDATION', rarity: 'bronze', icon: '🥊', desc: 'Earned 100+ XP in Batcave Combat Lab.', check: (d) => (d.skillXP.combat || 0) >= 100 },
+      { id: 'med-sanctum-seeker', title: 'SANCTUM SEEKER', rarity: 'bronze', icon: 'ॐ', desc: 'Earned 100+ XP in The Inner Sanctum.', check: (d) => (d.skillXP.spirit || 0) >= 100 },
+      { id: 'med-orderly-cadet', title: 'ORDER OF ALFRED', rarity: 'bronze', icon: '✦', desc: 'Earned 100+ XP in Alfred’s Protocol.', check: (d) => (d.skillXP.discipline || 0) >= 100 },
+      { id: 'med-social-operative', title: 'FIELDCRAFT SCOUT', rarity: 'bronze', icon: '♜', desc: 'Earned 100+ XP in 00 Field Operations.', check: (d) => (d.skillXP.social || 0) >= 100 },
+      { id: 'med-vital-protocol', title: 'WAYNE RESILIENCE', rarity: 'bronze', icon: '◈', desc: 'Earned 100+ XP in Wayne Conditioning.', check: (d) => (d.skillXP.health || 0) >= 100 },
+
+      { id: 'med-boss-slayer', title: 'NEMESIS SLAYER', rarity: 'silver', icon: '💀', desc: 'Vanquished your first Behavioral Boss.', check: (d) => (d.wins && d.wins.length >= 1) },
+      { id: 'med-iron-week', title: 'SEVEN DAYS OF IRON', rarity: 'silver', icon: '🗓️', desc: 'Achieved an active 7-day operational streak.', check: (d) => calculateStreak(d) >= 7 },
+      { id: 'med-clearance-c', title: 'SPECIAL OPERATIVE (C)', rarity: 'silver', icon: '🎖️', desc: 'Attained Clearance Rank C (Level 10).', check: (d) => getLevel(d.xp) >= 10 },
+      { id: 'med-first-ability', title: 'CAPABILITY UNLOCKED', rarity: 'silver', icon: '⚡', desc: 'Unlocked an advanced ability in the Skill Tree.', check: (d) => (d.unlockedSkills && d.unlockedSkills.length >= 1) },
+      { id: 'med-trio-slayer', title: 'TACTICAL TRIO', rarity: 'silver', icon: '🎯', desc: 'Defeated 3 unique bosses or nemeses.', check: (d) => (d.wins && d.wins.length >= 3) },
+      { id: 'med-study-scholar', title: 'MASTER OF MEMORY', rarity: 'silver', icon: '🧠', desc: 'Accumulated 300+ XP in Intelligence Analysis.', check: (d) => (d.skillXP.study || 0) >= 300 },
+
+      { id: 'med-clearance-b', title: 'SENIOR OPERATIVE (B)', rarity: 'gold', icon: '⭐', desc: 'Attained Clearance Rank B (Level 20).', check: (d) => getLevel(d.xp) >= 20 },
+      { id: 'med-boss-veteran', title: 'BOSS VANQUISHER', rarity: 'gold', icon: '👑', desc: 'Defeated 10 verified boss encounters.', check: (d) => (d.wins && d.wins.length >= 10) },
+      { id: 'med-month-duty', title: 'MONTH OF IRON', rarity: 'gold', icon: '🛡️', desc: 'Logged 30 active operational days.', check: (d) => Object.keys(d.days || {}).length >= 30 },
+      { id: 'med-all-rounder', title: 'RENAISSANCE AGENT', rarity: 'gold', icon: '⚜️', desc: 'Raised all six attributes to 15 or higher.', check: (d) => Object.values(d.attrs).every(v => v >= 15) },
+      { id: 'med-inner-stillness', title: 'UNBROKEN VOW', rarity: 'gold', icon: '🧘', desc: 'Reached 500+ XP in The Inner Sanctum.', check: (d) => (d.skillXP.spirit || 0) >= 500 },
+
+      { id: 'med-clearance-a', title: 'ELITE COMMANDER (A)', rarity: 'platinum', icon: '💎', desc: 'Attained Clearance Rank A (Level 35).', check: (d) => getLevel(d.xp) >= 35 },
+      { id: 'med-boss-champion', title: 'TACTICAL LEGEND', rarity: 'platinum', icon: '🏆', desc: 'Defeated 25 verified boss encounters.', check: (d) => (d.wins && d.wins.length >= 25) },
+      { id: 'med-hundred-missions', title: 'CENTURY CLEARED', rarity: 'platinum', icon: '💯', desc: 'Successfully cleared 100 total missions.', check: (d) => getLifetimeClearedCount(d) >= 100 },
+      { id: 'med-campaign-veteran', title: 'DEEP EXPEDITION', rarity: 'platinum', icon: '🗺️', desc: 'Archived Campaign Chapter 04.', check: (d) => (d.campaignClaims && d.campaignClaims.includes(3)) },
+
+      { id: 'med-clearance-s', title: 'APEX SHADOW SOVEREIGN (S)', rarity: 'legendary', icon: '🌌', desc: 'Attained highest Rank S (Level 50+).', check: (d) => getLevel(d.xp) >= 50 },
+      { id: 'med-grand-ascendant', title: 'THE MASTER OPERATIVE', rarity: 'legendary', icon: '🔱', desc: 'Earned 5,000+ total XP with 200+ cleared operations.', check: (d) => d.xp >= 5000 && getLifetimeClearedCount(d) >= 200 }
+    ];
+
+    const CAMPAIGN_CHAPTERS = [
+      { id: 0, title: 'CHAPTER 01: THE RECRUIT', threshold: 100, lore: 'Establish base field routine. Prove you can show up across intellect, body, and stillness without compromise.', reward: 30 },
+      { id: 1, title: 'CHAPTER 02: SHADOW CADRE', threshold: 350, lore: 'Forge cross-division equilibrium. Ensure academic pressure never erodes physical conditioning or inner prayer.', reward: 50 },
+      { id: 2, title: 'CHAPTER 03: THE DUAL IDENTITY', threshold: 750, lore: 'Operate smoothly across conflicting priorities. Execute rigorous study while maintaining calm personal dignity.', reward: 75 },
+      { id: 3, title: 'CHAPTER 04: TACTICAL ARCHITECT', threshold: 1500, lore: 'Transition from sporadic motivation to sovereign systems. Your schedule is governed by clinical command.', reward: 100 },
+      { id: 4, title: 'CHAPTER 05: PERMANENT ASCENSION', threshold: 3000, lore: 'The RPG has become your life substrate. Setbacks are treated as raw tactical data for immediate recalibration.', reward: 150 },
+      { id: 5, title: 'CHAPTER 06: DEEP OPERATIVE', threshold: 5000, lore: 'Unshakable endurance across multi-month exam horizons. Composure under high-stakes academic pressure.', reward: 200 },
+      { id: 6, title: 'CHAPTER 07: THE QUIET SOVEREIGN', threshold: 7500, lore: 'Mastery over the mind. Naam Jap and prayer grant total immunity to ambient panic and cognitive distraction.', reward: 250 },
+      { id: 7, title: 'CHAPTER 08: APEX RESILIENCE', threshold: 10000, lore: 'Elite athletic conditioning and razor-sharp intellect aligned in a single disciplined human being.', reward: 300 }
+    ];
+
+    const SKILL_TREES_DATA = [
+      {
+        area: 'study', title: 'MI6: INTELLIGENCE ACADEMY',
+        nodes: [
+          { id: 'study-0', title: 'CASE FILE DECONSTRUCTION', req: 100, desc: 'Break complex, monolithic exam syllabus into atomized, testable inquiry units.' },
+          { id: 'study-1', title: 'PATTERN RECOGNITION (PYQ)', req: 250, desc: 'Identify recurring question examiner patterns and pinpoint recurring weak links.' },
+          { id: 'study-2', title: 'STRATEGIC MASTER ARCHITECT', req: 500, desc: 'Construct dynamic multi-pass revision and high-yield retention systems.' }
+        ]
+      },
+      {
+        area: 'social', title: '00 FIELD OPERATIONS',
+        nodes: [
+          { id: 'social-0', title: 'ENVIRONMENTAL SITUATIONAL READ', req: 75, desc: 'Scan body language, unspoken tensions, and social room dynamics before speaking.' },
+          { id: 'social-1', title: 'TACTICAL DIPLOMAT', req: 200, desc: 'De-escalate friction with calm, articulate vocal modulation and controlled presence.' },
+          { id: 'social-2', title: 'MASTER NEGOTIATOR', req: 400, desc: 'Command high-stakes professional and interpersonal conversations with composure.' }
+        ]
+      },
+      {
+        area: 'combat', title: 'BATCAVE: COMBAT LAB',
+        nodes: [
+          { id: 'combat-0', title: 'BIOMECHANICAL FOUNDATION', req: 75, desc: 'Solidify kinetic chain, posture, core stability, and combat mobility.' },
+          { id: 'combat-1', title: 'TACTICAL ATHLETE', req: 200, desc: 'Synthesize explosive striking, grappling endurance, and functional conditioning.' },
+          { id: 'combat-2', title: 'CAGE COMPOSURE', req: 400, desc: 'Maintain complete analytical calm while under intense physical cardiovascular strain.' }
+        ]
+      },
+      {
+        area: 'health', title: 'WAYNE CONDITIONING PROTOCOL',
+        nodes: [
+          { id: 'health-0', title: 'CIRCADIAN DEFENSE', req: 75, desc: 'Enforce rigid dark-room sleep hygiene and non-negotiable nocturnal recovery.' },
+          { id: 'health-1', title: 'METABOLIC OPTIMIZATION', req: 200, desc: 'Calibrate nutrient density, hydration, and sustained cognitive energy output.' },
+          { id: 'health-2', title: 'IMMUNE FORTRESS', req: 400, desc: 'Maintain peak biological resilience and avoid burnout through intense exam seasons.' }
+        ]
+      },
+      {
+        area: 'spirit', title: 'THE INNER SANCTUM',
+        nodes: [
+          { id: 'spirit-0', title: 'THE MORNING VOW', req: 50, desc: 'Anchor every single dawn in devotional stillness, Naam Jap, and sacred intention.' },
+          { id: 'spirit-1', title: 'STEADFAST CONTEMPLATION', req: 150, desc: 'Cultivate unbroken concentration during japa without yielding to wandering thoughts.' },
+          { id: 'spirit-2', title: 'INNER SANCTUARY', req: 350, desc: 'Attain profound internal equanimity unaffected by external praise or blame.' }
+        ]
+      },
+      {
+        area: 'discipline', title: "ALFRED'S PROTOCOL",
+        nodes: [
+          { id: 'discipline-0', title: 'ORDER OF THE DAY', req: 50, desc: 'Maintain an immaculate physical workspace, wardrobe, and operational gear.' },
+          { id: 'discipline-1', title: 'IRON CADENCE', req: 150, desc: 'Execute standard operating procedures on days when zero motivation exists.' },
+          { id: 'discipline-2', title: 'THE UNSHAKABLE STANDARD', req: 350, desc: 'Personal dignity and hygiene that never wavers regardless of operational stress.' }
+        ]
+      }
+    ];
+
+    // ==========================================
+    // DATA STORE & MIGRATION ENGINE
+    // ==========================================
+    function createInitialState() {
+      return {
+        schemaVersion: 1,
+        name: 'PROJECT ASCENSION',
+        operative: {
+          codename: 'THE ASCENDANT',
+          callsign: 'AGENT 00 // FIELD COMMAND',
+          avatar: '🕶️',
+          spec: 'scholar',
+          bio: 'Permanent personal development RPG. Built for lifetime mastery.'
+        },
+        xp: 0,
+        merits: 0,
+        attrs: { int: 10, str: 10, agi: 10, vit: 10, wis: 10, dis: 10 },
+        skillXP: { study: 0, recall: 0, social: 0, combat: 0, health: 0, spirit: 0, discipline: 0 },
+        divisions: { ...DEFAULT_AREAS },
+        days: {},
+        weekly: {},
+        weeklyClaims: [],
+        monthly: {},
+        bosses: [],
+        wins: [],
+        nemesisWins: {},
+        earnedMedals: {},
+        campaignClaims: [],
+        unlockedSkills: [],
+        customRewards: [
+          { id: 'rew-1', title: 'Espresso & Tactical Reading Hour', cost: 10, desc: '1 hour uninterrupted reading of choice.' },
+          { id: 'rew-2', title: 'Cinema / Strategic Decompression', cost: 30, desc: 'Guilt-free movie or evening recreation.' },
+          { id: 'rew-3', title: 'Specialist Gear / Book Acquisition', cost: 60, desc: 'Invest in physical book or field equipment.' }
+        ],
+        redemptions: [],
+        chronicle: [],
+        settings: {
+          xpMultiplier: 1.0,
+          sound: false
+        }
+      };
+    }
+
+    let S = loadState();
+
+    function loadState() {
+      try {
+        let raw = localStorage.getItem(STORAGE_KEY_V1);
+        if (!raw) {
+          // Check for legacy v0.3 / v0.4 data migration
+          for (let legacyKey of LEGACY_STORAGE_KEYS) {
+            let legRaw = localStorage.getItem(legacyKey);
+            if (legRaw) {
+              let legData = JSON.parse(legRaw);
+              if (legData && typeof legData === 'object') {
+                return migrateLegacyData(legData);
+              }
+            }
+          }
+          return createInitialState();
+        }
+        let parsed = JSON.parse(raw);
+        return sanitizeAndVerifyState(parsed);
+      } catch (err) {
+        console.error('Data load error:', err);
+        return createInitialState();
+      }
+    }
+
+    function migrateLegacyData(old) {
+      let fresh = createInitialState();
+      fresh.name = old.name || fresh.name;
+      fresh.xp = Number(old.xp) || 0;
+      fresh.merits = Math.floor(fresh.xp / 10);
+      
+      // Migrate attributes
+      if (old.attrs) {
+        fresh.attrs.int = Number(old.attrs.int) || 10;
+        fresh.attrs.str = Number(old.attrs.com || old.attrs.str) || 10; // com -> str
+        fresh.attrs.agi = Number(old.attrs.skl || old.attrs.agi) || 10; // skl -> agi
+        fresh.attrs.vit = Number(old.attrs.vit) || 10;
+        fresh.attrs.wis = Number(old.attrs.wis) || 10;
+        fresh.attrs.dis = Number(old.attrs.dis) || 10;
+      }
+
+      // Migrate Skill XP
+      if (old.skillXP) {
+        Object.keys(fresh.skillXP).forEach(k => {
+          fresh.skillXP[k] = Number(old.skillXP[k]) || 0;
+        });
+      }
+
+      // Migrate Days & Quests
+      if (old.days && typeof old.days === 'object') {
+        fresh.days = old.days;
+      }
+
+      // Migrate Bosses & Wins
+      if (Array.isArray(old.bosses)) {
+        fresh.bosses = old.bosses.map(b => ({
+          id: b.id || Date.now(),
+          name: b.n || b.name || 'Custom Adversary',
+          desc: b.desc || '',
+          threat: 'Rank C',
+          xp: 40,
+          steps: Array.isArray(b.steps) ? b.steps.map(s => ({ t: s.t || s.text || s, done: !!s.done })) : [],
+          started: !!b.started,
+          claimed: !!b.claimed
+        }));
+      }
+
+      if (Array.isArray(old.wins)) fresh.wins = old.wins;
+      if (old.weekly) fresh.weekly = old.weekly;
+      if (Array.isArray(old.weeklyClaims)) fresh.weeklyClaims = old.weeklyClaims;
+      if (Array.isArray(old.unlockedSkills)) fresh.unlockedSkills = old.unlockedSkills;
+      if (Array.isArray(old.campaignClaims)) fresh.campaignClaims = old.campaignClaims;
+      if (old.nemesisWins) fresh.nemesisWins = old.nemesisWins;
+
+      // Add chronicle note
+      fresh.chronicle.unshift({
+        id: 'chron-mig-' + Date.now(),
+        date: getTodayStr(),
+        type: 'system',
+        text: 'PROJECT ASCENSION v1.0 migration executed. Legacy v0.4 operative data preserved.'
+      });
+
+      saveState(fresh);
+      return fresh;
+    }
+
+    function sanitizeAndVerifyState(data) {
+      let base = createInitialState();
+      let merged = { ...base, ...data };
+      merged.attrs = { ...base.attrs, ...(data.attrs || {}) };
+      merged.skillXP = { ...base.skillXP, ...(data.skillXP || {}) };
+      merged.divisions = { ...base.divisions, ...(data.divisions || {}) };
+      merged.operative = { ...base.operative, ...(data.operative || {}) };
+      merged.settings = { ...base.settings, ...(data.settings || {}) };
+      if (!Array.isArray(merged.bosses)) merged.bosses = [];
+      if (!Array.isArray(merged.wins)) merged.wins = [];
+      if (!Array.isArray(merged.weeklyClaims)) merged.weeklyClaims = [];
+      if (!Array.isArray(merged.campaignClaims)) merged.campaignClaims = [];
+      if (!Array.isArray(merged.unlockedSkills)) merged.unlockedSkills = [];
+      if (!Array.isArray(merged.customRewards)) merged.customRewards = base.customRewards;
+      if (!Array.isArray(merged.redemptions)) merged.redemptions = [];
+      if (!Array.isArray(merged.chronicle)) merged.chronicle = [];
+      if (!merged.earnedMedals || typeof merged.earnedMedals !== 'object') merged.earnedMedals = {};
+      return merged;
+    }
+
+    function saveState(customState) {
+      let stateToSave = customState || S;
+      try {
+        localStorage.setItem(STORAGE_KEY_V1, JSON.stringify(stateToSave));
+        saveToIndexedDB(stateToSave);
+      } catch (err) {
+        console.error('LocalStorage write failed:', err);
+      }
+    }
+
+    // Dual Storage: IndexedDB Support for Android offline resilience
+    function saveToIndexedDB(state) {
+      if (!window.indexedDB) return;
+      try {
+        let req = indexedDB.open('AscensionDB', 1);
+        req.onupgradeneeded = (e) => {
+          let db = e.target.result;
+          if (!db.objectStoreNames.contains('operativedata')) {
+            db.createObjectStore('operativedata', { keyPath: 'id' });
+          }
+        };
+        req.onsuccess = (e) => {
+          let db = e.target.result;
+          let tx = db.transaction('operativedata', 'readwrite');
+          let store = tx.objectStore('operativedata');
+          store.put({ id: 'active_profile', payload: state, updatedAt: new Date().toISOString() });
+        };
+      } catch (_) {}
+    }
+
+    // ==========================================
+    // UTILITIES & MATHEMATICAL FORMULAS
+    // ==========================================
+    function getTodayStr() {
+      return new Date().toLocaleDateString('en-CA');
+    }
+
+    function getWeekStr() {
+      let d = new Date();
+      let yearStart = new Date(d.getFullYear(), 0, 1);
+      let weekNum = Math.ceil((((d - yearStart) / 86400000) + yearStart.getDay() + 1) / 7);
+      return `${d.getFullYear()}-W${String(weekNum).padStart(2, '0')}`;
+    }
+
+    function getLevel(xp) {
+      return Math.floor(Math.max(0, xp) / 100) + 1;
+    }
+
+    function getRank(lvl) {
+      if (lvl >= 75) return 'S-RANK NATIONAL';
+      if (lvl >= 50) return 'RANK S';
+      if (lvl >= 35) return 'RANK A';
+      if (lvl >= 20) return 'RANK B';
+      if (lvl >= 10) return 'RANK C';
+      if (lvl >= 5) return 'RANK D';
+      return 'RANK E';
+    }
+
+    function getTodayDayData() {
+      let today = getTodayStr();
+      if (!S.days[today]) {
+        S.days[today] = {
+          quests: DEFAULT_DAILY_MISSIONS.map(m => ({ ...m, id: 'm-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5) }))
+        };
+        saveState();
+      }
+      return S.days[today];
+    }
+
+    function getLifetimeClearedCount(state) {
+      let count = 0;
+      Object.values(state.days || {}).forEach(d => {
+        if (d && Array.isArray(d.quests)) {
+          count += d.quests.filter(q => q.done).length;
+        }
+      });
+      return count;
+    }
+
+    function calculateStreak(state) {
+      let days = Object.keys(state.days || {}).sort().reverse();
+      if (!days.length) return 0;
+      let streak = 0;
+      for (let dayStr of days) {
+        let d = state.days[dayStr];
+        let hasDone = d && d.quests && d.quests.some(q => q.done);
+        if (hasDone) {
+          streak++;
+        } else if (dayStr !== getTodayStr()) {
+          break;
+        }
+      }
+      return streak;
+    }
+
+    function escapeHtml(str) {
+      return String(str || '').replace(/[&<>"']/g, c => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[c]));
+    }
+
+    function showToast(msg, icon = '🛡️') {
+      let tray = document.getElementById('toastTray');
+      let toast = document.createElement('div');
+      toast.className = 'toast-msg';
+      toast.innerHTML = `<span>${icon}</span><span>${escapeHtml(msg)}</span>`;
+      tray.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(-8px)';
+        toast.style.transition = 'all 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    function addChronicleEntry(type, text) {
+      S.chronicle.unshift({
+        id: 'c-' + Date.now(),
+        date: getTodayStr(),
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        type,
+        text
+      });
+      if (S.chronicle.length > 80) S.chronicle.pop();
+    }
+
+    // ==========================================
+    // RENDER ENGINE
+    // ==========================================
+    let currentMissionFilter = 'daily';
+    let currentMedalFilter = 'all';
+
+    function renderAll() {
+      renderHero();
+      renderOperativeView();
+      renderMissionsView();
+      renderBossesView();
+      renderMedalsView();
+      renderCampaignView();
+      renderAnalyticsView();
+      checkAllMedalUnlocks();
+    }
+
+    function renderHero() {
+      let lvl = getLevel(S.xp);
+      let rank = getRank(lvl);
+      let dayData = getTodayDayData();
+      let clearedToday = dayData.quests.filter(q => q.done).length;
+      let streak = calculateStreak(S);
+
+      document.title = `${S.name} // LVL ${lvl} ${rank}`;
+      document.getElementById('brandTitle').innerHTML = `<span style="color:var(--gold)">${escapeHtml(S.name)}</span> <small style="font-size:10px;color:var(--muted)">v1.0</small>`;
+      document.getElementById('codenameDisplay').textContent = S.operative.codename || 'THE ASCENDANT';
+      document.getElementById('avatarDisplay').textContent = S.operative.avatar || '🕶️';
+      document.getElementById('rankBadge').textContent = rank;
+      document.getElementById('lvlDisplay').textContent = String(lvl).padStart(2, '0');
+      document.getElementById('specPill').textContent = (S.operative.spec || 'SCHOLAR').toUpperCase();
+
+      document.getElementById('totalXpDisplay').textContent = S.xp;
+      document.getElementById('clearedCountDisplay').textContent = `${clearedToday}/${dayData.quests.length}`;
+      document.getElementById('streakDisplay').textContent = streak;
+      document.getElementById('bossesBeatenDisplay').textContent = (S.wins || []).length;
+
+      let progressXp = S.xp % 100;
+      document.getElementById('nextLvlDisplay').textContent = lvl + 1;
+      document.getElementById('xpBarText').textContent = `${progressXp} / 100 XP`;
+      document.getElementById('xpProgressBar').style.width = `${progressXp}%`;
+      document.getElementById('missionDateLabel').textContent = getTodayStr();
+    }
+
+    function renderOperativeView() {
+      // 1. Attributes Grid
+      let attrsHtml = Object.entries(S.attrs).map(([key, val]) => `
+        <div class="attr-box">
+          <div class="attr-name">${ATTR_LABELS[key] || key.toUpperCase()}</div>
+          <div class="attr-val">${val}</div>
+          <div class="attr-desc">${ATTR_DESCRIPTIONS[key] || ''}</div>
+        </div>
+      `).join('');
+      document.getElementById('attrsGrid').innerHTML = attrsHtml;
+
+      // 2. Divisions Grid
+      const divSigils = { study: '♜', social: '◈', combat: '⚔️', health: '🛡️', spirit: 'ॐ', discipline: '✦' };
+      let divHtml = Object.entries(S.divisions).map(([key, name]) => {
+        let earnedXp = S.skillXP[key] || 0;
+        return `
+          <div class="division-card" onclick="quickFilterDivision('${key}')">
+            <div class="div-sigil">${divSigils[key] || '❖'}</div>
+            <div class="div-text">
+              <b>${escapeHtml(name)}</b>
+              <small>${DEFAULT_AREAS[key]}</small>
+              <div class="div-xp-tag">${earnedXp} DOMAIN XP</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+      document.getElementById('divisionGrid').innerHTML = divHtml;
+
+      // 3. Skill Trees
+      let treesHtml = SKILL_TREES_DATA.map(tree => {
+        let treeXp = S.skillXP[tree.area] || 0;
+        let nodesHtml = tree.nodes.map(node => {
+          let isUnlocked = S.unlockedSkills.includes(node.id);
+          let canUnlock = treeXp >= node.req;
+          return `
+            <div class="chapter-node ${isUnlocked ? 'claimed' : canUnlock ? 'unlocked' : ''}">
+              <div class="chapter-head">
+                <b style="font-size:11px">${escapeHtml(node.title)}</b>
+                <span style="font-size:8px;font-weight:800;letter-spacing:1px;color:${isUnlocked ? 'var(--green)' : canUnlock ? 'var(--gold)' : 'var(--muted)'}">
+                  ${isUnlocked ? 'ACQUIRED' : canUnlock ? 'READY' : 'LOCKED'}
+                </span>
+              </div>
+              <div class="chapter-desc">${escapeHtml(node.desc)}</div>
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <small style="font-size:9px;color:var(--muted)">Threshold: ${node.req} ${tree.area.toUpperCase()} XP · Current: ${treeXp}</small>
+                ${!isUnlocked ? `<button class="btn sm ${canUnlock ? 'primary' : ''}" ${canUnlock ? '' : 'disabled'} onclick="unlockSkillNode('${node.id}', '${tree.area}', ${node.req})">${canUnlock ? 'UNLOCK ABILITY' : 'LOCKED'}</button>` : ''}
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        return `
+          <div class="panel">
+            <div class="panel-header">
+              <span class="panel-title">${tree.title}</span>
+              <span style="font-size:9px;color:var(--gold)">${treeXp} SKILL XP</span>
+            </div>
+            ${nodesHtml}
+          </div>
+        `;
+      }).join('');
+      document.getElementById('skillTreesContainer').innerHTML = treesHtml;
+    }
+
+    function renderMissionsView() {
+      let dayData = getTodayDayData();
+      let quests = dayData.quests || [];
+
+      // Filter by timeframe
+      let filtered = quests;
+      if (currentMissionFilter === 'daily') filtered = quests.filter(q => (q.timeframe || 'daily') === 'daily');
+      else if (currentMissionFilter === 'weekly') filtered = quests.filter(q => q.timeframe === 'weekly');
+      else if (currentMissionFilter === 'monthly') filtered = quests.filter(q => q.timeframe === 'monthly');
+
+      if (!filtered.length) {
+        document.getElementById('missionList').innerHTML = `
+          <div class="panel" style="text-align:center;padding:24px 14px">
+            <div style="font-size:24px;margin-bottom:8px">📋</div>
+            <div style="color:var(--txt);font-weight:700">No operations active in this filter.</div>
+            <div style="color:var(--muted);font-size:11px;margin-top:4px">Add custom missions or switch to the Daily tab.</div>
+          </div>
+        `;
+        return;
+      }
+
+      let html = filtered.map(q => `
+        <div class="quest-item ${q.done ? 'done' : q.missed ? 'missed' : ''}" id="item-${q.id}">
+          <input type="checkbox" class="q-checkbox" ${q.done ? 'checked' : ''} onchange="toggleMissionCompletion('${q.id}')" aria-label="Mark mission complete">
+          <div class="q-body">
+            <div class="q-title">${escapeHtml(q.title)}</div>
+            <div class="q-meta-row">
+              <span class="badge-tag badge-${q.area || 'study'}">${(S.divisions[q.area] || q.area || 'study').toUpperCase()}</span>
+              <span style="color:var(--muted)">PRIORITY: <b style="color:#fff">${q.priority || 'P2'}</b></span>
+              <span style="color:var(--muted)">ATTR: <b style="color:var(--gold)">${(q.attr || 'int').toUpperCase()}</b></span>
+              ${q.missed ? '<span style="color:var(--red);font-weight:800">[SKIPPED]</span>' : ''}
+              <span class="q-xp-badge">+${q.xp} XP</span>
+            </div>
+          </div>
+          <div class="q-actions">
+            <button class="q-btn-tiny" onclick="markMissionMissed('${q.id}')" title="Mark Skipped/Missed">⊘</button>
+            <button class="q-btn-tiny" onclick="editMission('${q.id}')" title="Edit">✎</button>
+            <button class="q-btn-tiny" onclick="deleteMission('${q.id}')" title="Delete">✕</button>
+          </div>
+        </div>
+      `).join('');
+
+      document.getElementById('missionList').innerHTML = html;
+    }
+
+    function renderBossesView() {
+      // 1. Weekly Boss
+      let weekId = getWeekStr();
+      let bossIdx = Math.abs(hashCode(weekId)) % WEEKLY_BEHAVIORAL_BOSSES.length;
+      let weeklyBoss = WEEKLY_BEHAVIORAL_BOSSES[bossIdx];
+      let stateEntry = S.weekly[weekId] || [false, false, false];
+      let isClaimed = S.weeklyClaims.includes(weekId);
+
+      document.getElementById('weeklyBossTitle').textContent = weeklyBoss.name;
+      document.getElementById('weeklyBossDesc').textContent = weeklyBoss.desc;
+
+      let stepsHtml = weeklyBoss.steps.map((step, idx) => `
+        <label class="boss-objective">
+          <input type="checkbox" class="q-checkbox" ${stateEntry[idx] ? 'checked' : ''} ${isClaimed ? 'disabled' : ''} onchange="toggleWeeklyBossStep(${idx}, this.checked)">
+          <span style="${stateEntry[idx] ? 'text-decoration:line-through;color:var(--muted)' : ''}">${escapeHtml(step)}</span>
+        </label>
+      `).join('');
+      document.getElementById('weeklyBossSteps').innerHTML = stepsHtml;
+
+      let doneSteps = stateEntry.filter(Boolean).length;
+      let hpPercent = isClaimed ? 0 : Math.round(((3 - doneSteps) / 3) * 100);
+      document.getElementById('weeklyBossHp').style.width = `${hpPercent}%`;
+
+      let btn = document.getElementById('weeklyBossBtn');
+      if (isClaimed) {
+        btn.textContent = 'BOSS VANQUISHED // CLAIMED';
+        btn.disabled = true;
+      } else if (doneSteps === 3) {
+        btn.textContent = 'CLAIM VICTORY (+50 XP)';
+        btn.disabled = false;
+      } else {
+        btn.textContent = 'ENGAGE BOSS // COMPLETE 3 OBJECTIVES';
+        btn.disabled = false;
+      }
+
+      // 2. Custom Bosses
+      if (!S.bosses.length) {
+        document.getElementById('customBossesList').innerHTML = `
+          <div class="panel" style="text-align:center;padding:18px">
+            <div style="font-size:20px">⚔️</div>
+            <div style="font-size:11px;color:var(--txt-dim);margin-top:4px">No custom boss engagements active.</div>
+          </div>
+        `;
+      } else {
+        let bHtml = S.bosses.map(b => {
+          let stepsDone = (b.steps || []).filter(s => s.done).length;
+          let totalSteps = (b.steps || []).length || 1;
+          let hpPct = b.claimed ? 0 : Math.round(((totalSteps - stepsDone) / totalSteps) * 100);
+
+          return `
+            <div class="boss-card ${b.claimed ? 'defeated' : ''}">
+              <span class="boss-badge">${b.claimed ? 'VICTORY ARCHIVED' : b.threat || 'CUSTOM THREAT'}</span>
+              <div class="boss-name">${escapeHtml(b.name)}</div>
+              <div class="boss-desc">${escapeHtml(b.desc)}</div>
+              <div class="boss-hp-bar">
+                <div class="boss-hp-fill" style="width:${hpPct}%"></div>
+              </div>
+              <div>
+                ${(b.steps || []).map((s, idx) => `
+                  <label class="boss-objective">
+                    <input type="checkbox" class="q-checkbox" ${s.done ? 'checked' : ''} ${b.claimed ? 'disabled' : ''} onchange="toggleCustomBossStep('${b.id}', ${idx}, this.checked)">
+                    <span style="${s.done ? 'text-decoration:line-through;color:var(--muted)' : ''}">${escapeHtml(s.t)}</span>
+                  </label>
+                `).join('')}
+              </div>
+              <div style="margin-top:10px;display:flex;gap:6px">
+                ${!b.claimed ? `
+                  <button class="btn primary sm" ${stepsDone === totalSteps ? '' : 'disabled'} onclick="claimCustomBossVictory('${b.id}')">
+                    ${stepsDone === totalSteps ? `CLAIM VICTORY (+${b.xp || 40} XP)` : 'OBJECTIVES PENDING'}
+                  </button>
+                ` : '<span style="font-size:9px;color:var(--green);font-weight:700">VICTORY RECORDED IN DOSSIER</span>'}
+                <button class="btn danger sm" onclick="deleteCustomBoss('${b.id}')">DISMISS</button>
+              </div>
+            </div>
+          `;
+        }).join('');
+        document.getElementById('customBossesList').innerHTML = bHtml;
+      }
+
+      // 3. Permanent Nemesis Database
+      let nemHtml = PERMANENT_NEMESES.map((nem, idx) => {
+        let wins = S.nemesisWins[idx] || 0;
+        return `
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--line)">
+            <div>
+              <b style="font-size:11px;color:#fff">${nem.name}</b>
+              <div style="font-size:9px;color:var(--muted)">${nem.threat} · Victories: <b style="color:var(--gold)">${wins}</b></div>
+            </div>
+            <button class="btn sm" onclick="logNemesisVictory(${idx})">LOG DEFEAT</button>
+          </div>
+        `;
+      }).join('');
+      document.getElementById('nemesisList').innerHTML = nemHtml;
+    }
+
+    function renderMedalsView() {
+      let medals = MEDAL_CATALOG;
+      if (currentMedalFilter === 'unlocked') {
+        medals = medals.filter(m => !!S.earnedMedals[m.id]);
+      } else if (currentMedalFilter === 'locked') {
+        medals = medals.filter(m => !S.earnedMedals[m.id]);
+      }
+
+      let html = medals.map(m => {
+        let earned = S.earnedMedals[m.id];
+        return `
+          <div class="medal-card ${earned ? 'unlocked' : ''}">
+            <div class="medal-icon">${m.icon}</div>
+            <div class="medal-body">
+              <div class="medal-title">${m.title}</div>
+              <div class="medal-rarity rarity-${m.rarity}">${m.rarity.toUpperCase()}</div>
+              <div class="medal-req">${m.desc}</div>
+              ${earned ? `<div class="medal-date">ACQUIRED: ${earned.unlockedAt || getTodayStr()}</div>` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      document.getElementById('medalsGrid').innerHTML = html;
+    }
+
+    function renderCampaignView() {
+      // 1. Chapters
+      let chaptersHtml = CAMPAIGN_CHAPTERS.map((ch) => {
+        let unlocked = S.xp >= ch.threshold;
+        let claimed = S.campaignClaims.includes(ch.id);
+
+        return `
+          <div class="chapter-node ${claimed ? 'claimed' : unlocked ? 'unlocked' : ''}">
+            <div class="chapter-head">
+              <b>${ch.title}</b>
+              <span class="badge-tag" style="background:${claimed ? 'rgba(135,185,154,0.15)' : unlocked ? 'rgba(201,170,105,0.15)' : 'rgba(255,255,255,0.05)'};color:${claimed ? 'var(--green)' : unlocked ? 'var(--gold)' : 'var(--muted)'}">
+                ${claimed ? 'ARCHIVED' : unlocked ? 'READY' : 'CLASSIFIED'}
+              </span>
+            </div>
+            <div class="chapter-desc">${ch.lore}</div>
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <small style="font-size:9px;color:var(--muted)">Threshold: ${ch.threshold} Global XP · Reward: +${ch.reward} XP</small>
+              ${unlocked && !claimed ? `<button class="btn sm primary" onclick="claimCampaignChapter(${ch.id}, ${ch.reward})">ARCHIVE CHAPTER</button>` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+      document.getElementById('campaignChaptersList').innerHTML = chaptersHtml;
+
+      // 2. Weekly SITREP Card
+      let weekId = getWeekStr();
+      let streak = calculateStreak(S);
+      let weeklyBossDefeated = S.weeklyClaims.includes(weekId);
+      let dayData = getTodayDayData();
+      let clearedToday = dayData.quests.filter(q => q.done).length;
+
+      document.getElementById('weeklySitrepCard').innerHTML = `
+        <div style="font-size:11px;font-weight:800;color:var(--gold-bright);margin-bottom:6px">DISPATCH // ${weekId}</div>
+        <p style="font-size:11px;color:var(--txt-dim);line-height:1.5;margin-bottom:8px">
+          Operative <b>${escapeHtml(S.operative.codename)}</b> maintains an active ${streak}-day operational discipline streak. 
+          Today's operational clearance rate stands at ${clearedToday}/${dayData.quests.length} missions. 
+          Weekly behavioral threat status: <b>${weeklyBossDefeated ? 'NEUTRALIZED' : 'ACTIVE IN THE FIELD'}</b>. 
+          Continue rigorous execution across academic study, physical training and interior silence.
+        </p>
+        <div style="font-size:9px;color:var(--muted);font-style:italic">Intelligence report procedurally compiled from verified operational logs.</div>
+      `;
+
+      // 3. Chronicle
+      if (!S.chronicle.length) {
+        document.getElementById('chronicleList').innerHTML = `<div style="font-size:10px;color:var(--muted);text-align:center;padding:12px">No operations logged yet. Complete missions or vanquish bosses.</div>`;
+      } else {
+        let cHtml = S.chronicle.slice(0, 30).map(c => `
+          <div class="chronicle-entry">
+            <div class="chronicle-date">${c.date} · ${c.time || ''}</div>
+            <div class="chronicle-text">${escapeHtml(c.text)}</div>
+          </div>
+        `).join('');
+        document.getElementById('chronicleList').innerHTML = cHtml;
+      }
+    }
+
+    function renderAnalyticsView() {
+      drawRadarChart();
+      drawDonutChart();
+
+      // Personal Records Panel
+      let topAttr = Object.entries(S.attrs).sort((a,b) => b[1] - a[1])[0] || ['int', 10];
+      let bestStreak = calculateStreak(S);
+      document.getElementById('personalRecordsPanel').innerHTML = `
+        <div style="display:grid;grid-template-columns:repeat(2, 1fr);gap:10px">
+          <div><span style="font-size:9px;color:var(--muted)">HIGHEST ATTRIBUTE:</span><div style="font-size:13px;font-weight:800;color:var(--gold-bright)">${ATTR_LABELS[topAttr[0]]} (${topAttr[1]})</div></div>
+          <div><span style="font-size:9px;color:var(--muted)">ACTIVE DAY STREAK:</span><div style="font-size:13px;font-weight:800;color:var(--green)">${bestStreak} DAYS</div></div>
+          <div><span style="font-size:9px;color:var(--muted)">TOTAL MISSIONS CLEARED:</span><div style="font-size:13px;font-weight:800;color:#fff">${getLifetimeClearedCount(S)}</div></div>
+          <div><span style="font-size:9px;color:var(--muted)">MEDALS & HONOURS:</span><div style="font-size:13px;font-weight:800;color:var(--gold)">${Object.keys(S.earnedMedals).length} / ${MEDAL_CATALOG.length}</div></div>
+        </div>
+      `;
+
+      // Custom Rewards
+      document.getElementById('meritsBalance').textContent = `${S.merits} MERITS`;
+      let rHtml = S.customRewards.map(r => `
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)">
+          <div>
+            <b style="font-size:11px;color:#fff">${escapeHtml(r.title)}</b>
+            <div style="font-size:9px;color:var(--muted)">${escapeHtml(r.desc || '')} · <b style="color:var(--gold)">${r.cost} Merits</b></div>
+          </div>
+          <div style="display:flex;gap:4px">
+            <button class="btn sm primary" ${S.merits >= r.cost ? '' : 'disabled'} onclick="redeemReward('${r.id}', ${r.cost}, '${escapeHtml(r.title)}')">REDEEM</button>
+            <button class="btn sm danger" onclick="deleteReward('${r.id}')">✕</button>
+          </div>
+        </div>
+      `).join('');
+      document.getElementById('rewardsList').innerHTML = rHtml;
+    }
+
+    // ==========================================
+    // CHART RENDERING ENGINES (SVG)
+    // ==========================================
+    function drawRadarChart() {
+      let keys = ['int', 'str', 'agi', 'vit', 'wis', 'dis'];
+      let maxVal = Math.max(20, ...keys.map(k => S.attrs[k] || 10));
+      let cx = 150, cy = 130, R = 95;
+
+      let getCoord = (idx, r) => {
+        let angle = -Math.PI / 2 + idx * (Math.PI / 3);
+        return [cx + Math.cos(angle) * r, cy + Math.sin(angle) * r];
+      };
+
+      let polygonPoints = (r) => keys.map((_, i) => getCoord(i, r).join(',')).join(' ');
+
+      let svgContent = '';
+
+      // Grid rings
+      [0.25, 0.5, 0.75, 1.0].forEach(factor => {
+        svgContent += `<polygon points="${polygonPoints(R * factor)}" fill="none" stroke="#223528" stroke-width="1"/>`;
+      });
+
+      // Axis lines & labels
+      keys.forEach((k, i) => {
+        let pt = getCoord(i, R);
+        svgContent += `<line x1="${cx}" y1="${cy}" x2="${pt[0]}" y2="${pt[1]}" stroke="#223528" stroke-width="1"/>`;
+        let labelPt = getCoord(i, R + 18);
+        svgContent += `<text x="${labelPt[0]}" y="${labelPt[1] + 4}" fill="#bac7bd" font-size="9" font-weight="700" text-anchor="middle">${k.toUpperCase()}</text>`;
+      });
+
+      // Data polygon
+      let dataPoints = keys.map((k, i) => {
+        let val = Math.min(maxVal, S.attrs[k] || 10);
+        return getCoord(i, R * (val / maxVal)).join(',');
+      }).join(' ');
+
+      svgContent += `<polygon points="${dataPoints}" fill="rgba(135,185,154,0.22)" stroke="#87b99a" stroke-width="2"/>`;
+
+      // Data dots
+      keys.forEach((k, i) => {
+        let val = Math.min(maxVal, S.attrs[k] || 10);
+        let pt = getCoord(i, R * (val / maxVal));
+        svgContent += `<circle cx="${pt[0]}" cy="${pt[1]}" r="3.5" fill="#e7c77d"/>`;
+      });
+
+      document.getElementById('radarSvg').innerHTML = svgContent;
+
+      // Legend
+      let legendHtml = keys.map(k => `
+        <div><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--gold);margin-right:6px"></span>${ATTR_LABELS[k]}: <b style="color:#fff">${S.attrs[k] || 10}</b></div>
+      `).join('') + `<small style="color:var(--muted);display:block;margin-top:6px">Scale max: ${maxVal}</small>`;
+      document.getElementById('radarLegend').innerHTML = legendHtml;
+    }
+
+    function drawDonutChart() {
+      let divKeys = ['study', 'social', 'combat', 'health', 'spirit', 'discipline'];
+      let colors = ['#84a6c7', '#aa97ce', '#c9756b', '#74bfb4', '#c9aa69', '#87b99a'];
+      let vals = divKeys.map(k => S.skillXP[k] || 0);
+      let totalXP = vals.reduce((a, b) => a + b, 0);
+
+      let cx = 120, cy = 120, r = 85, hole = 55;
+      let svg = '';
+
+      if (totalXP === 0) {
+        svg = `
+          <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#223528" stroke-width="${r - hole}"/>
+          <text x="${cx}" y="${cy + 4}" fill="#7d9183" font-size="10" text-anchor="middle">NO XP LOGGED</text>
+        `;
+      } else {
+        let accAngle = 0;
+        divKeys.forEach((key, idx) => {
+          let val = vals[idx];
+          if (val <= 0) return;
+          let sliceAngle = (val / totalXP) * (Math.PI * 2);
+          let startAngle = accAngle;
+          let endAngle = accAngle + sliceAngle;
+          accAngle += sliceAngle;
+
+          let x1 = cx + r * Math.cos(startAngle);
+          let y1 = cy + r * Math.sin(startAngle);
+          let x2 = cx + r * Math.cos(endAngle);
+          let y2 = cy + r * Math.sin(endAngle);
+
+          let x3 = cx + hole * Math.cos(endAngle);
+          let y3 = cy + hole * Math.sin(endAngle);
+          let x4 = cx + hole * Math.cos(startAngle);
+          let y4 = cy + hole * Math.sin(startAngle);
+
+          let largeArc = sliceAngle > Math.PI ? 1 : 0;
+          let d = `M ${x1} ${y1} A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2} L ${x3} ${y3} A ${hole} ${hole} 0 ${largeArc} 0 ${x4} ${y4} Z`;
+          svg += `<path d="${d}" fill="${colors[idx]}" stroke="#070b09" stroke-width="1.5"/>`;
+        });
+
+        svg += `
+          <text x="${cx}" y="${cy - 4}" fill="#fff" font-size="13" font-weight="900" text-anchor="middle">${totalXP}</text>
+          <text x="${cx}" y="${cy + 10}" fill="#7d9183" font-size="8" letter-spacing="1" text-anchor="middle">DOMAIN XP</text>
+        `;
+      }
+
+      document.getElementById('donutSvg').innerHTML = svg;
+
+      let legendHtml = divKeys.map((k, i) => {
+        let pct = totalXP > 0 ? Math.round((vals[i] / totalXP) * 100) : 0;
+        return `<div><span style="display:inline-block;width:7px;height:7px;border-radius:2px;background:${colors[i]};margin-right:5px"></span>${S.divisions[k] || k}: <b style="color:#fff">${pct}%</b> <small style="color:var(--muted)">(${vals[i]} XP)</small></div>`;
+      }).join('');
+      document.getElementById('donutLegend').innerHTML = legendHtml;
+    }
+
+    // ==========================================
+    // ACTION HANDLERS: MISSIONS & BOSSES
+    // ==========================================
+    function toggleMissionCompletion(id) {
+      let dayData = getTodayDayData();
+      let quest = (dayData.quests || []).find(q => q.id === id);
+      if (!quest) return;
+
+      quest.done = !quest.done;
+      if (quest.done) quest.missed = false;
+      let multiplier = quest.done ? 1 : -1;
+      let xpDelta = quest.xp * multiplier;
+
+      S.xp = Math.max(0, S.xp + xpDelta);
+      S.merits = Math.max(0, S.merits + Math.floor(xpDelta / 10));
+
+      if (quest.attr) {
+        S.attrs[quest.attr] = Math.max(1, (S.attrs[quest.attr] || 10) + multiplier);
+      }
+      if (quest.area) {
+        S.skillXP[quest.area] = Math.max(0, (S.skillXP[quest.area] || 0) + xpDelta);
+      }
+
+      if (quest.done) {
+        addChronicleEntry('mission', `Cleared operation: ${quest.title} (+${quest.xp} XP)`);
+        showToast(`Operation Cleared: +${quest.xp} XP`, '✓');
+      }
+
+      saveState();
+      renderAll();
+    }
+
+    function markMissionMissed(id) {
+      let dayData = getTodayDayData();
+      let quest = (dayData.quests || []).find(q => q.id === id);
+      if (!quest) return;
+
+      quest.missed = !quest.missed;
+      if (quest.missed && quest.done) {
+        // Unmark done first
+        toggleMissionCompletion(id);
+      }
+      saveState();
+      renderMissionsView();
+      showToast(quest.missed ? 'Mission marked skipped.' : 'Mission restored.', '⊘');
+    }
+
+    function handleWeeklyBossAction() {
+      let weekId = getWeekStr();
+      let steps = S.weekly[weekId] || [false, false, false];
+      let doneSteps = steps.filter(Boolean).length;
+      if (doneSteps === 3) {
+        claimWeeklyBoss();
+      } else {
+        showToast('Complete all 3 weekly objectives above to claim victory.', '🛡️');
+      }
+    }
+
+    function toggleWeeklyBossStep(stepIdx, isChecked) {
+      let weekId = getWeekStr();
+      if (!S.weekly[weekId]) S.weekly[weekId] = [false, false, false];
+      S.weekly[weekId][stepIdx] = isChecked;
+      saveState();
+      renderBossesView();
+    }
+
+    function claimWeeklyBoss() {
+      let weekId = getWeekStr();
+      let steps = S.weekly[weekId] || [];
+      if (!steps.every(Boolean)) return;
+
+      let bossIdx = Math.abs(hashCode(weekId)) % WEEKLY_BEHAVIORAL_BOSSES.length;
+      let boss = WEEKLY_BEHAVIORAL_BOSSES[bossIdx];
+
+      S.xp += 50;
+      S.merits += 5;
+      S.weeklyClaims.push(weekId);
+      S.wins.push({ name: boss.name, date: getTodayStr(), xp: 50, threat: 'Weekly Boss' });
+
+      addChronicleEntry('boss', `VANQUISHED BOSS: ${boss.name} (+50 XP)`);
+      showToast(`Boss Vanquished: ${boss.name}! +50 XP`, '🏆');
+
+      saveState();
+      renderAll();
+    }
+
+    function toggleCustomBossStep(bossId, stepIdx, isChecked) {
+      let boss = S.bosses.find(b => String(b.id) === String(bossId));
+      if (!boss || !boss.steps || !boss.steps[stepIdx]) return;
+      boss.steps[stepIdx].done = isChecked;
+      saveState();
+      renderBossesView();
+    }
+
+    function claimCustomBossVictory(bossId) {
+      let boss = S.bosses.find(b => String(b.id) === String(bossId));
+      if (!boss || boss.claimed) return;
+      if (!boss.steps.every(s => s.done)) return;
+
+      boss.claimed = true;
+      let xpReward = boss.xp || 40;
+      S.xp += xpReward;
+      S.merits += Math.floor(xpReward / 10);
+      S.wins.push({ name: boss.name, date: getTodayStr(), xp: xpReward, threat: boss.threat });
+
+      addChronicleEntry('boss', `VANQUISHED ADVERSARY: ${boss.name} (+${xpReward} XP)`);
+      showToast(`Adversary Defeated: ${boss.name}! +${xpReward} XP`, '🏆');
+
+      saveState();
+      renderAll();
+    }
+
+    function deleteCustomBoss(bossId) {
+      S.bosses = S.bosses.filter(b => String(b.id) !== String(bossId));
+      saveState();
+      renderBossesView();
+      showToast('Boss engagement dismissed.', '✕');
+    }
+
+    function logNemesisVictory(idx) {
+      let nem = PERMANENT_NEMESES[idx];
+      S.nemesisWins[idx] = (S.nemesisWins[idx] || 0) + 1;
+      S.xp += 20;
+      S.merits += 2;
+      S.wins.push({ name: nem.name, date: getTodayStr(), xp: 20, threat: 'Permanent Nemesis' });
+
+      addChronicleEntry('boss', `Defeated Nemesis Pattern: ${nem.name} (+20 XP)`);
+      showToast(`Pattern Defeated: ${nem.name}! +20 XP`, '⚡');
+
+      saveState();
+      renderAll();
+    }
+
+    function unlockSkillNode(nodeId, area, reqXP) {
+      if (S.unlockedSkills.includes(nodeId)) return;
+      let currentXp = S.skillXP[area] || 0;
+      if (currentXp < reqXP) return;
+
+      S.unlockedSkills.push(nodeId);
+      addChronicleEntry('skill', `UNLOCKED ABILITY: ${nodeId} in ${area.toUpperCase()}`);
+      showToast('Capability Unlocked in Skill Tree!', '⚡');
+
+      saveState();
+      renderAll();
+    }
+
+    function claimCampaignChapter(chapterId, xpReward) {
+      if (S.campaignClaims.includes(chapterId)) return;
+      let ch = CAMPAIGN_CHAPTERS.find(c => c.id === chapterId);
+      if (!ch || S.xp < ch.threshold) return;
+
+      S.campaignClaims.push(chapterId);
+      S.xp += xpReward;
+      S.merits += Math.floor(xpReward / 10);
+
+      addChronicleEntry('campaign', `ARCHIVED CAMPAIGN CHAPTER: ${ch.title} (+${xpReward} XP)`);
+      showToast(`Campaign Chapter Archived: +${xpReward} XP`, '🗺️');
+
+      saveState();
+      renderAll();
+    }
+
+    // ==========================================
+    // AUTOMATIC MEDAL DETECTION
+    // ==========================================
+    function checkAllMedalUnlocks() {
+      let anyUnlocked = false;
+      MEDAL_CATALOG.forEach(medal => {
+        if (!S.earnedMedals[medal.id] && medal.check(S)) {
+          S.earnedMedals[medal.id] = {
+            unlockedAt: getTodayStr(),
+            title: medal.title,
+            rarity: medal.rarity
+          };
+          anyUnlocked = true;
+          addChronicleEntry('medal', `MEDAL CONFERRED: ${medal.title} [${medal.rarity.toUpperCase()}]`);
+          showToast(`Medal Conferred: ${medal.title}!`, medal.icon || '🎖️');
+        }
+      });
+      if (anyUnlocked) {
+        saveState();
+        renderHero();
+      }
+    }
+
+    // ==========================================
+    // REWARDS ENGINE
+    // ==========================================
+    function redeemReward(id, cost, title) {
+      if (S.merits < cost) return;
+      S.merits -= cost;
+      S.redemptions.unshift({ id: 'red-' + Date.now(), rewardTitle: title, cost, date: getTodayStr() });
+      addChronicleEntry('reward', `Redeemed Reward: ${title} (-${cost} Merits)`);
+      showToast(`Reward Redeemed: Enjoy your ${title}!`, '🎁');
+      saveState();
+      renderAnalyticsView();
+    }
+
+    function deleteReward(id) {
+      S.customRewards = S.customRewards.filter(r => r.id !== id);
+      saveState();
+      renderAnalyticsView();
+    }
+
+    // ==========================================
+    // FORM DIALOGS & MODAL CONTROLLERS
+    // ==========================================
+    function openModal(id) {
+      let m = document.getElementById(id);
+      if (m) m.classList.add('active');
+    }
+
+    function closeModal(id) {
+      let m = document.getElementById(id);
+      if (m) m.classList.remove('active');
+    }
+
+    function switchNavTab(tabName) {
+      document.querySelectorAll('.view-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+
+      let viewEl = document.getElementById('view-' + tabName);
+      let btnEl = document.getElementById('nav-' + tabName);
+      if (viewEl) viewEl.classList.add('active');
+      if (btnEl) btnEl.classList.add('active');
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function switchMissionFilter(filter, btn) {
+      currentMissionFilter = filter;
+      document.querySelectorAll('#view-missions .tab-pill').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      renderMissionsView();
+    }
+
+    function switchMedalFilter(filter, btn) {
+      currentMedalFilter = filter;
+      document.querySelectorAll('#view-medals .tab-pill').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      renderMedalsView();
+    }
+
+    function quickFilterDivision(divKey) {
+      switchNavTab('missions');
+      currentMissionFilter = 'all';
+    }
+
+    // Mission Modal Handling
+    function openAddMissionModal() {
+      document.getElementById('editMissionId').value = '';
+      document.getElementById('missionModalHeading').textContent = 'CREATE NEW MISSION';
+      document.getElementById('missionInputTitle').value = '';
+      openModal('missionModal');
+    }
+
+    function editMission(id) {
+      let dayData = getTodayDayData();
+      let q = (dayData.quests || []).find(x => x.id === id);
+      if (!q) return;
+
+      document.getElementById('editMissionId').value = q.id;
+      document.getElementById('missionModalHeading').textContent = 'EDIT MISSION';
+      document.getElementById('missionInputTitle').value = q.title || '';
+      document.getElementById('missionInputDivision').value = q.area || 'study';
+      document.getElementById('missionInputTimeframe').value = q.timeframe || 'daily';
+      document.getElementById('missionInputPriority').value = q.priority || 'P2';
+      openModal('missionModal');
+    }
+
+    function deleteMission(id) {
+      let dayData = getTodayDayData();
+      dayData.quests = (dayData.quests || []).filter(q => q.id !== id);
+      saveState();
+      renderMissionsView();
+      renderHero();
+      showToast('Mission deleted.', '✕');
+    }
+
+    function saveMissionForm() {
+      let title = document.getElementById('missionInputTitle').value.trim();
+      if (!title) {
+        showToast('Please provide an operational objective title.', '⚠️');
+        return;
+      }
+      let area = document.getElementById('missionInputDivision').value;
+      let timeframe = document.getElementById('missionInputTimeframe').value;
+      let diffVal = document.getElementById('missionInputDifficulty').value.split(':');
+      let diffName = diffVal[0];
+      let xp = Number(diffVal[1]) || 10;
+      let priority = document.getElementById('missionInputPriority').value;
+
+      const areaAttrMap = { study: 'int', social: 'agi', combat: 'str', health: 'vit', spirit: 'wis', discipline: 'dis' };
+      let attr = areaAttrMap[area] || 'int';
+
+      let editId = document.getElementById('editMissionId').value;
+      let dayData = getTodayDayData();
+
+      if (editId) {
+        let q = dayData.quests.find(x => x.id === editId);
+        if (q) {
+          q.title = title;
+          q.area = area;
+          q.attr = attr;
+          q.timeframe = timeframe;
+          q.xp = xp;
+          q.difficulty = diffName;
+          q.priority = priority;
+        }
+      } else {
+        dayData.quests.push({
+          id: 'm-' + Date.now(),
+          title,
+          area,
+          attr,
+          timeframe,
+          difficulty: diffName,
+          xp,
+          priority,
+          done: false
+        });
+      }
+
+      saveState();
+      closeModal('missionModal');
+      renderMissionsView();
+      renderHero();
+      showToast('Mission saved to daily control.', '✓');
+    }
+
+    // Custom Boss Modal
+    function openAddBossModal() {
+      document.getElementById('bossInputName').value = '';
+      document.getElementById('bossInputDesc').value = '';
+      document.getElementById('bossInputSteps').value = '';
+      openModal('bossModal');
+    }
+
+    function saveCustomBoss() {
+      let name = document.getElementById('bossInputName').value.trim();
+      let desc = document.getElementById('bossInputDesc').value.trim();
+      let rawSteps = document.getElementById('bossInputSteps').value.split(';').map(s => s.trim()).filter(Boolean);
+      let threatParts = document.getElementById('bossInputThreat').value.split(':');
+      let threat = threatParts[0];
+      let xp = Number(threatParts[1]) || 40;
+
+      if (!name || !rawSteps.length) {
+        showToast('Specify an adversary name and at least one objective.', '⚠️');
+        return;
+      }
+
+      S.bosses.push({
+        id: 'cb-' + Date.now(),
+        name,
+        desc,
+        threat,
+        xp,
+        steps: rawSteps.map(t => ({ t, done: false })),
+        claimed: false
+      });
+
+      addChronicleEntry('boss', `DEPLOYED ADVERSARY: ${name} [${threat}]`);
+      saveState();
+      closeModal('bossModal');
+      renderBossesView();
+      showToast(`Adversary Deployed: ${name}`, '⚔️');
+    }
+
+    // Profile & Avatar Modal
+    function openProfileModal() {
+      document.getElementById('profileCodename').value = S.operative.codename || '';
+      document.getElementById('profileCallsign').value = S.operative.callsign || '';
+      document.getElementById('profileSpec').value = S.operative.spec || 'scholar';
+
+      let picker = document.getElementById('avatarPicker');
+      picker.innerHTML = AVATAR_OPTIONS.map(av => `
+        <div class="avatar-frame" style="width:44px;height:44px;font-size:20px;border-color:${(S.operative.avatar || '🕶️') === av ? 'var(--gold-bright)' : 'var(--line)'}" onclick="selectAvatar('${av}')">
+          ${av}
+        </div>
+      `).join('');
+
+      openModal('profileModal');
+    }
+
+    function selectAvatar(av) {
+      S.operative.avatar = av;
+      openProfileModal(); // Refresh highlight
+    }
+
+    function saveProfileForm() {
+      S.operative.codename = document.getElementById('profileCodename').value.trim() || 'THE ASCENDANT';
+      S.operative.callsign = document.getElementById('profileCallsign').value.trim() || 'OPERATIVE';
+      S.operative.spec = document.getElementById('profileSpec').value;
+
+      saveState();
+      closeModal('profileModal');
+      renderHero();
+      showToast('Operative Dossier updated.', '✓');
+    }
+
+    // Custom Reward Modal
+    function openAddRewardModal() {
+      document.getElementById('rewardTitle').value = '';
+      document.getElementById('rewardDesc').value = '';
+      openModal('rewardModal');
+    }
+
+    function saveCustomReward() {
+      let title = document.getElementById('rewardTitle').value.trim();
+      let cost = Math.max(1, Number(document.getElementById('rewardCost').value) || 10);
+      let desc = document.getElementById('rewardDesc').value.trim();
+
+      if (!title) {
+        showToast('Please specify a reward title.', '⚠️');
+        return;
+      }
+
+      S.customRewards.push({
+        id: 'rew-' + Date.now(),
+        title,
+        cost,
+        desc
+      });
+
+      saveState();
+      closeModal('rewardModal');
+      renderAnalyticsView();
+      showToast('Custom Reward Added.', '🎁');
+    }
+
+    // Report / Sitrep Modal
+    function openReportModal() {
+      let lvl = getLevel(S.xp);
+      let rank = getRank(lvl);
+      let dayData = getTodayDayData();
+      let cleared = dayData.quests.filter(q => q.done);
+      let pending = dayData.quests.filter(q => !q.done);
+
+      let text = `=====================================================
+PROJECT ASCENSION v1.0 // DAILY FIELD SITREP
+CLASSIFIED // AGENT: ${S.operative.codename.toUpperCase()}
+DATE: ${getTodayStr()} | RANK: ${rank} | LEVEL: ${String(lvl).padStart(2, '0')}
+TOTAL GLOBAL XP: ${S.xp} | AVAILABLE MERITS: ${S.merits}
+=====================================================
+
+[+] OPERATIONAL PERFORMANCE
+Missions Cleared Today: ${cleared.length} / ${dayData.quests.length}
+Active Days Logged: ${Object.keys(S.days).length}
+Current Day Streak: ${calculateStreak(S)} days
+Bosses Vanquished: ${S.wins.length}
+
+[+] CLEARED OPERATIONS
+${cleared.map(q => `[X] ${q.title} (+${q.xp} XP | ${(q.area || '').toUpperCase()})`).join('\n') || 'None recorded today'}
+
+[+] PENDING OBJECTIVES
+${pending.map(q => `[ ] ${q.title} (+${q.xp} XP | Priority: ${q.priority || 'P2'})`).join('\n') || 'All operations cleared'}
+
+[+] ATTRIBUTE READOUT
+${Object.entries(S.attrs).map(([k, v]) => `${k.toUpperCase()}: ${v}`).join(' | ')}
+
+[+] DOMAIN XP LEDGER
+${Object.entries(S.skillXP).map(([k, v]) => `${(S.divisions[k] || k).toUpperCase()}: ${v} XP`).join('\n')}
+
+[+] RECENT BOSS VICTORIES
+${S.wins.slice(-5).map(w => `${w.date} - ${w.name} (+${w.xp} XP)`).join('\n') || 'No victories recorded yet'}
+
+[+] HONOURS & ACHIEVEMENTS CONFERRED: ${Object.keys(S.earnedMedals).length} Medals
+=====================================================
+FOR YOUR EYES ONLY · DISCIPLINE EQUALS FREEDOM
+`;
+
+      document.getElementById('reportTextarea').value = text;
+      openModal('reportModal');
+    }
+
+    function copySitrepReport() {
+      let ta = document.getElementById('reportTextarea');
+      ta.select();
+      try {
+        navigator.clipboard.writeText(ta.value).then(() => {
+          showToast('SITREP copied to clipboard!', '📋');
+        }).catch(() => {
+          document.execCommand('copy');
+          showToast('SITREP copied to clipboard!', '📋');
+        });
+      } catch (_) {
+        document.execCommand('copy');
+        showToast('SITREP copied to clipboard!', '📋');
+      }
+    }
+
+    // Settings Modal
+    function openSettingsModal() {
+      document.getElementById('settingsProjectName').value = S.name || 'PROJECT ASCENSION';
+      document.getElementById('settingsXpMultiplier').value = String(S.settings.xpMultiplier || 1.0);
+      openModal('settingsModal');
+    }
+
+    // Backup & Restore
+    function exportDataBackup() {
+      let blob = new Blob([JSON.stringify(S, null, 2)], { type: 'application/json' });
+      let url = URL.createObjectURL(blob);
+      let a = document.createElement('a');
+      a.href = url;
+      a.download = `project-ascension-backup-${getTodayStr()}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('JSON Backup downloaded safely.', '💾');
+    }
+
+    function handleImportBackup(event) {
+      let file = event.target.files && event.target.files[0];
+      if (!file) return;
+
+      let reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          let imported = JSON.parse(e.target.result);
+          if (!imported || typeof imported !== 'object') throw new Error('Corrupt file');
+          if (!imported.attrs && !imported.xp) throw new Error('Invalid schema');
+
+          S = sanitizeAndVerifyState(imported);
+          saveState();
+          renderAll();
+          showToast('Backup restored successfully!', '✓');
+        } catch (err) {
+          showToast('Invalid backup file. Restoration aborted.', '⚠️');
+        }
+      };
+      reader.readAsText(file);
+      event.target.value = '';
+    }
+
+    // Emergency Reset via In-Page Modal
+    function openResetConfirmModal() {
+      document.getElementById('resetConfirmationInput').value = '';
+      openModal('resetConfirmModal');
+    }
+
+    function executeConfirmedReset() {
+      let val = document.getElementById('resetConfirmationInput').value.trim();
+      if (val === 'RESET') {
+        exportDataBackup();
+        S = createInitialState();
+        saveState();
+        renderAll();
+        closeModal('resetConfirmModal');
+        closeModal('settingsModal');
+        showToast('System reset to baseline. Safety backup exported.', '🛡️');
+      } else {
+        showToast('Reset aborted. Type RESET exactly to confirm.', '⚠️');
+      }
+    }
+
+    function hashCode(str) {
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) {
+        hash = (hash << 5) - hash + str.charCodeAt(i);
+        hash |= 0;
+      }
+      return hash;
+    }
+
+    // ==========================================
+    // INITIALIZATION & SERVICE WORKER
+    // ==========================================
+    window.addEventListener('DOMContentLoaded', () => {
+      renderAll();
+
+      // Inline PWA Service Worker for Offline Execution
+      if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+        const swScript = `
+          const CACHE_NAME = 'ascension-v1-cache';
+          self.addEventListener('install', e => {
+            self.skipWaiting();
+          });
+          self.addEventListener('activate', e => {
+            e.waitUntil(clients.claim());
+          });
+          self.addEventListener('fetch', e => {
+            e.respondWith(
+              caches.match(e.request).then(cached => cached || fetch(e.request).catch(() => cached))
+            );
+          });
+        `;
+        const blob = new Blob([swScript], { type: 'application/javascript' });
+        navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(() => {});
+      }
+    });
+  </script>
+</body>
+</html>
